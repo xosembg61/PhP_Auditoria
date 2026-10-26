@@ -1,12 +1,28 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { IconComponent, AchievementNoticeComponent } from './shared/ui';
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, IconComponent, AchievementNoticeComponent],
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('PhP_Auditoria');
+  readonly menuOpen = signal(false);
+  readonly links = [
+    { path: '/', label: 'Inicio' },
+    { path: '/incidente', label: 'Incidente' },
+    { path: '/versiones', label: 'Versiones' },
+    { path: '/auditoria', label: 'Auditoría' },
+    { path: '/guia', label: 'Guía' },
+    { path: '/fuentes', label: 'Fuentes' },
+  ];
+  focusMain(event: Event) {
+    event.preventDefault();
+    document.getElementById('contenido')?.focus();
+  }
+  onPageChange() {
+    this.menuOpen.set(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setTimeout(() => document.getElementById('contenido')?.focus({ preventScroll: true }));
+  }
 }

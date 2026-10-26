@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "node scripts/build.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:PhP_Auditoria": "node dist/PhP_Auditoria/server/server.mjs"
+    "test:ci": "node scripts/test.mjs",
+    "preview": "node scripts/preview.mjs"
   },
   "private": true,
   "packageManager": "npm@11.19.0",

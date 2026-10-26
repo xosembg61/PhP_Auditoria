@@ -1,0 +1,157 @@
+<div class="container page">
+  <app-page-header
+    eyebrow="Auditoría"
+    title="Checklist de auditoría para Twinteach"
+    description="18 comprobaciones, cinco etapas y una regla: cada conclusión necesita evidencia. Esta web no ha revisado los sistemas reales de Twinteach."
+  />
+  <div class="audit-toolbar">
+    <div class="segmented" aria-label="Modo de trabajo">
+      <button [attr.aria-pressed]="p.mode() === 'demo'" (click)="changeMode('demo')">
+        DEMO · Datos ficticios</button
+      ><button [attr.aria-pressed]="p.mode() === 'template'" (click)="changeMode('template')">
+        PLANTILLA · Revisión autorizada
+      </button>
+    </div>
+    <a class="text-link" routerLink="/ayuda"
+      >¿Qué cuenta como evidencia? <app-icon name="info"
+    /></a>
+  </div>
+  <div class="callout warning compact">
+    <strong>{{
+      p.mode() === 'demo' ? 'DEMO / DATOS SIMULADOS' : 'PLANTILLA / NOTAS DEL VISITANTE'
+    }}</strong>
+    <p>
+      {{
+        p.mode() === 'demo'
+          ? 'Los ejemplos son ficticios y no pertenecen a Twinteach.'
+          : 'Las tareas parten sin verificar. Solo documenta una revisión con acceso autorizado.'
+      }}
+      Marcar tareas no demuestra por sí solo que el sistema esté protegido.
+    </p>
+  </div>
+  @if (p.storage.warning()) {
+    <p class="callout warning" role="status">{{ p.storage.warning() }}</p>
+  }
+  <div class="audit-layout">
+    <div>
+      <div class="section-tabs" role="group" aria-label="Secciones de la checklist">
+        @for (s of sections; track s.id) {
+          <button
+            [class.active]="active() === s.id"
+            (click)="active.set(s.id)"
+            [attr.aria-pressed]="active() === s.id"
+          >
+            <span class="section-letter">{{ s.id }}</span
+            ><span
+              ><strong>{{ s.title }}</strong
+              ><small
+                >{{ p.section(s.id).done }} de {{ p.section(s.id).total }} documentadas</small
+              ></span
+            >
+            @if (p.section(s.id).complete) {
+              <app-icon name="check" />
+            }
+          </button>
+        }
+      </div>
+      <div class="section-heading audit-section-heading">
+        <div>
+          <span class="eyebrow">ETAPA {{ active() }} / 5</span>
+          <h2>{{ currentSection().title }}</h2>
+          <p>{{ currentSection().description }}</p>
+        </div>
+      </div>
+      @for (t of sectionTasks(); track t.id) {
+        <app-audit-task [task]="t" />
+      }
+      <div class="button-row">
+        <button class="button secondary" [disabled]="active() === 'A'" (click)="navigate(-1)">
+          Anterior etapa</button
+        ><button class="button primary" [disabled]="active() === 'E'" (click)="navigate(1)">
+          Siguiente etapa <app-icon name="arrow" />
+        </button>
+      </div>
+    </div>
+    <aside class="audit-sidebar">
+      <section class="panel progress-panel">
+        <span class="eyebrow">PROGRESO DOCUMENTADO</span
+        ><app-progress-ring [done]="p.count()" [total]="tasks.length" />
+        <h2>{{ p.count() }} de 18 tareas</h2>
+        <p>Actividad documentada, no porcentaje de seguridad.</p>
+        <div class="status-breakdown">
+          @for (s of statuses; track s.id) {
+            <div>
+              <span><i [class]="'status-marker ' + s.id"></i>{{ s.label }}</span
+              ><strong>{{ statusCount(s.id) }}</strong>
+            </div>
+          }
+        </div>
+        <span class="badge">{{ p.mode() === 'demo' ? 'DEMO' : 'PLANTILLA' }}</span>
+      </section>
+      <section class="panel">
+        <div class="panel-heading">
+          <app-icon name="trophy" />
+          <h2>Mis logros</h2>
+        </div>
+        <div class="achievements-list">
+          @for (s of sections; track s.id) {
+            <div [class.unlocked]="p.section(s.id).complete">
+              <app-icon [name]="p.section(s.id).complete ? 'trophy' : 'lock'" />
+              <div>
+                <strong>{{ s.achievement }}</strong
+                ><small>{{
+                  p.section(s.id).complete
+                    ? 'Desbloqueado'
+                    : p.state().unlocks[s.id]
+                      ? 'Etapa reabierta'
+                      : 'Pendiente'
+                }}</small>
+                @if (p.state().unlocks[s.id]) {
+                  <small
+                    >{{ p.state().unlocks[s.id].slice(0, 10) }} ·
+                    {{ p.mode() === 'demo' ? 'Aprendizaje' : 'Documentación' }}</small
+                  >
+                }
+                @if (p.section(s.id).complete) {
+                  <button class="text-button" (click)="p.replay(s.id, s.achievement, s.message)">
+                    Ver logro / reproducir
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Conserva tu informe</h2>
+        <p>
+          Revisa las notas antes de compartir. Las descargas incluyen estados, fechas, límites y
+          fuentes.
+        </p>
+        <button class="button primary full" (click)="p.exportJson()">
+          <app-icon name="download" /> Exportar JSON</button
+        ><button class="button secondary full" (click)="p.exportHtml()">
+          <app-icon name="file" /> Informe imprimible
+        </button>
+        <p class="field-help">
+          Abre el HTML descargado y usa Ctrl+P para imprimir o guardar en PDF.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Reiniciar este modo</h2>
+        <p>El progreso del otro modo se conserva.</p>
+        @if (!confirmReset()) {
+          <button class="text-button critical-text" (click)="confirmReset.set(true)">
+            Reiniciar {{ p.mode() === 'demo' ? 'demo' : 'plantilla' }}
+          </button>
+        } @else {
+          <p>¿Borrar tareas y logros de este modo?</p>
+          <div class="button-row">
+            <button class="button danger" (click)="reset()">Sí, borrar</button
+            ><button class="button secondary" (click)="confirmReset.set(false)">Cancelar</button>
+          </div>
+        }
+      </section>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,270 @@
+<div class="container page">
+  <app-page-header
+    eyebrow="Laboratorio"
+    title="Indicios, logs y preguntas mejores."
+    description="Aprende a interpretar señales sin realizar ataques. Tres escenarios ficticios para separar hechos, hipótesis y atribución."
+  />
+  <div class="split lab-banner">
+    <span class="badge warning">ENTORNO SIMULADO · NO CORRESPONDE A TWINTEACH</span
+    ><span
+      >{{ p.state().lab.length }} de 3 casos razonados · Progreso
+      {{ p.mode() === 'demo' ? 'DEMO' : 'PLANTILLA' }}</span
+    >
+  </div>
+  <div class="scenario-tabs" role="group" aria-label="Casos ficticios">
+    @for (s of scenarios; track s.id; let i = $index) {
+      <button
+        [class.active]="caseId() === s.id"
+        [attr.aria-pressed]="caseId() === s.id"
+        (click)="choose(s.id)"
+      >
+        <span class="mono">CASO 0{{ i + 1 }}</span
+        ><strong>{{ s.title }}</strong>
+        @if (p.state().lab.includes(s.id)) {
+          <span class="success-text">✓ Razonado</span>
+        }
+      </button>
+    }
+  </div>
+  <div class="panel case-context">
+    <span class="eyebrow">21 OCT 2026 · 10:30–10:32 UTC · DATOS SINTÉTICOS</span>
+    <p>{{ current().description }}</p>
+  </div>
+  <div class="lab-layout">
+    <div>
+      <section class="panel logs-panel">
+        <div class="section-heading">
+          <h2>Registro de eventos</h2>
+          <span class="badge">{{ filtered().length }} / {{ current().events.length }} eventos</span>
+        </div>
+        <div class="log-filters">
+          <div>
+            <label for="log-search">Buscar texto</label
+            ><input
+              id="log-search"
+              type="search"
+              [ngModel]="search()"
+              (ngModelChange)="search.set($event)"
+              placeholder="Mensaje, fuente o IP ficticia"
+            />
+          </div>
+          <div>
+            <label for="log-source">Fuente</label
+            ><select id="log-source" [ngModel]="source()" (ngModelChange)="source.set($event)">
+              <option value="ALL">Todas</option>
+              <option>WEB</option>
+              <option>PHP</option>
+              <option>MON</option>
+            </select>
+          </div>
+          <div>
+            <label for="log-level">Nivel</label
+            ><select id="log-level" [ngModel]="level()" (ngModelChange)="level.set($event)">
+              <option value="ALL">Todos</option>
+              <option>INFO</option>
+              <option>WARN</option>
+              <option>ERROR</option>
+              <option>ALERT</option>
+            </select>
+          </div>
+          <div>
+            <label for="log-from">Desde (UTC)</label
+            ><input
+              id="log-from"
+              type="time"
+              [ngModel]="from()"
+              (ngModelChange)="from.set($event)"
+            />
+          </div>
+          <div>
+            <label for="log-until">Hasta (UTC)</label
+            ><input
+              id="log-until"
+              type="time"
+              [ngModel]="until()"
+              (ngModelChange)="until.set($event)"
+            />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="logs-table">
+            <caption class="sr-only">
+              Eventos ficticios del caso
+              {{
+                current().title
+              }}
+            </caption>
+            <thead>
+              <tr>
+                <th>Selección</th>
+                <th>Hora UTC</th>
+                <th>Fuente / nivel</th>
+                <th>Mensaje / origen</th>
+                <th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (e of filtered(); track e.id) {
+                <tr [class.selected-row]="focused() === e.id">
+                  <td>
+                    <input
+                      type="checkbox"
+                      [checked]="answer().selected.includes(e.id)"
+                      (change)="toggle(e.id)"
+                      [attr.aria-label]="'Añadir evento ' + e.id + ' a mi hipótesis'"
+                    />
+                  </td>
+                  <td class="mono">{{ e.timestamp.slice(11, 19) }}</td>
+                  <td>
+                    <span class="mono">{{ e.source }}</span
+                    ><span [class]="'badge level-' + e.level">{{ e.level }}</span>
+                  </td>
+                  <td>
+                    {{ e.message }}<small class="mono">{{ e.ip }}</small>
+                  </td>
+                  <td>
+                    <button
+                      class="text-button"
+                      (click)="inspect(e)"
+                      [attr.aria-label]="'Inspeccionar evento ' + e.id"
+                    >
+                      <app-icon name="search" /><span class="sr-only">Inspeccionar</span>
+                    </button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5">
+                    No hay eventos con estos filtros. Amplía el intervalo o cambia la búsqueda.
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="field-help">
+          Las IP pertenecen a rangos reservados para documentación. Los filtros no eliminan eventos
+          ya seleccionados.
+        </p>
+      </section>
+      <section class="panel hypothesis">
+        <div class="section-heading">
+          <h2>Mi hipótesis</h2>
+          <span class="badge">{{ answer().selected.length }} seleccionados</span>
+        </div>
+        <form (ngSubmit)="check()">
+          <label for="conclusion">Qué permite concluir el conjunto</label
+          ><select
+            id="conclusion"
+            name="conclusion"
+            [ngModel]="answer().conclusion"
+            (ngModelChange)="update({ conclusion: $event })"
+          >
+            <option value="">Selecciona una conclusión</option>
+            @for (c of conclusions; track c.id) {
+              <option [value]="c.id">{{ c.label }}</option>
+            }</select
+          ><label for="justification">Por qué relaciono estos eventos y qué falta</label
+          ><textarea
+            id="justification"
+            name="justification"
+            rows="4"
+            maxlength="4000"
+            [ngModel]="answer().justification"
+            (ngModelChange)="update({ justification: $event })"
+            placeholder="Cita los hechos, explica la relación y reconoce límites. Mínimo 40 caracteres."
+          ></textarea>
+          <div class="button-row">
+            <button class="button primary" type="submit">
+              Comprobar razonamiento <app-icon name="arrow" /></button
+            ><button class="button secondary" type="button" (click)="reset()">Repetir caso</button>
+          </div>
+        </form>
+        @if (feedback(); as f) {
+          <div [class]="f.accepted ? 'callout success' : 'callout warning'" aria-live="polite">
+            <strong>{{ f.title }}</strong>
+            <p>{{ f.text }}</p>
+          </div>
+        }
+      </section>
+    </div>
+    <aside>
+      <section class="panel event-detail">
+        <span class="eyebrow">INSPECCIÓN DEL EVENTO</span>
+        @if (selectedEvent(); as e) {
+          <h2>{{ e.source }} / {{ e.timestamp.slice(11, 19) }} UTC</h2>
+          <p class="mono">{{ e.message }}</p>
+          <h3>Qué puede indicar</h3>
+          <p>{{ e.interpretation }}</p>
+          <h3>Qué no demuestra</h3>
+          <p>{{ e.uncertainty }}</p>
+          <h3>Qué mirar después</h3>
+          <p>{{ e.next }}</p>
+          <button class="button secondary full" (click)="toggle(e.id)">
+            {{
+              answer().selected.includes(e.id) ? 'Quitar de mi hipótesis' : 'Añadir a mi hipótesis'
+            }}</button
+          ><button
+            class="text-button"
+            (click)="showContext.set(!showContext())"
+            [attr.aria-expanded]="showContext()"
+          >
+            Mostrar contexto cercano
+          </button>
+          @if (showContext()) {
+            <ul class="context-events">
+              @for (c of context(); track c.id) {
+                <li>
+                  <span class="mono">{{ c.timestamp.slice(11, 19) }}</span> {{ c.message }}
+                </li>
+              }
+            </ul>
+          }
+        } @else {
+          <span class="empty-icon"><app-icon name="search" /></span>
+          <h2>Lee más allá del nivel.</h2>
+          <p>
+            Inspecciona una fila para ver su interpretación, sus límites y el siguiente dato que
+            conviene buscar.
+          </p>
+        }
+      </section>
+      <section class="panel activity-panel">
+        <h2>Actividad del caso</h2>
+        <p>Eventos por minuto · todo el dataset</p>
+        <div
+          class="histogram"
+          role="img"
+          [attr.aria-label]="'Histograma del caso con ' + current().events.length + ' eventos'"
+        >
+          @for (b of histogram(); track b.minute) {
+            <div>
+              <span>{{ b.count }}</span
+              ><i [style.height.%]="b.height"></i><small class="mono">{{ b.minute }}</small>
+            </div>
+          }
+        </div>
+        <div class="split">
+          <span>SINTÉTICO</span><strong>{{ current().events.length }} eventos</strong>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Una pista, si la necesitas</h2>
+        @for (h of current().hints.slice(0, answer().hint); track h) {
+          <p class="hint">{{ h }}</p>
+        }
+        <button class="button secondary full" [disabled]="answer().hint >= 3" (click)="hint()">
+          Mostrar pista {{ Math.min(3, answer().hint + 1) }} / 3
+        </button>
+      </section>
+    </aside>
+  </div>
+  <div class="callout">
+    <strong>Practicar no equivale a investigar un ataque real.</strong>
+    <p>
+      En un incidente real, preserva registros, contrasta integridad, delimita alcance y documenta
+      incertidumbres. Un conjunto parcial sin alertas no permite descartar intrusión.
+    </p>
+    <app-source-refs [ids]="['state', 'aws']" />
+  </div>
+</div>

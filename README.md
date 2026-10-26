@@ -1,59 +1,93 @@
-# PhPAuditoria
+# PHP2Shell · Centro de aprendizaje y auditoría
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Aplicación **Angular 22 real**, TypeScript y CSS, creada siguiendo la especificación Markdown proporcionada. Funciona en el navegador, sin backend ni escaneos remotos.
 
-## Development server
+## Estado de entrega
 
-To start a local development server, run:
+- Código terminado y compilación de producción comprobada.
+- **54 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
+- Revisión editorial con fuentes primarias el **26 de octubre de 2026**.
+- Revisión visual de navegador pendiente: el entorno de creación no pudo conectar con su propio servidor local. No se han validado visualmente móvil, tablet y escritorio.
+- Sin commit, push ni publicación. No existe workflow activo de despliegue.
+- El proyecto original indicado por el propietario no se ha modificado, porque estaba fuera de las rutas de escritura del entorno.
 
-```bash
-ng serve
+## Aplicar a la carpeta del propietario
+
+Ruta indicada en esta sesión:
+
+```text
+C:\Users\Miguel\Documents\GitHub\PhP_Auditoria
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+El archivo **Importar_En_Proyecto.ps1** copia el código a esa carpeta y guarda primero los archivos sustituidos en `.php2shell-backups/<fecha>`. Conserva `.git`, `node_modules` y la configuración del editor. No hace operaciones de Git ni despliega.
 
-## Code scaffolding
+Revisa el script y ejecútalo desde PowerShell 7:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```powershell
+pwsh -NoProfile -File .\Importar_En_Proyecto.ps1 -Destination "C:\Users\Miguel\Documents\GitHub\PhP_Auditoria"
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Si estás en clase, cambia únicamente el valor de `-Destination` por la ruta real. Para aplicar los cambios, cierra antes el servidor de desarrollo del proyecto de destino.
 
-```bash
-ng generate --help
+## Iniciar en local
+
+Dentro de la carpeta del proyecto:
+
+```powershell
+npm.cmd ci
+npm.cmd start -- --port 4201
 ```
 
-## Building
+Abre **http://localhost:4201/**. Si ya están instaladas las dependencias del proyecto original y no han cambiado, se puede omitir `npm ci`.
 
-To build the project run:
+## Validar y compilar
 
-```bash
-ng build
+```powershell
+npm.cmd run test:ci
+npm.cmd run build
+npm.cmd run preview
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+La vista de producción queda en **http://127.0.0.1:4201/**. Detén primero `ng serve` si ocupa ese puerto. La salida estática está en `dist/PhP_Auditoria/browser/`.
 
-## Running unit tests
+El script de pruebas usa una carpeta temporal dentro del proyecto para evitar restricciones de permisos de Windows. El de compilación limpia exclusivamente los bundles generados del directorio de salida y prepara ese directorio antes de ejecutar Angular.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Funciones
 
-```bash
-ng test
-```
+- Portada con acceso a los cuatro módulos principales.
+- Incidente y alcance transversal: frameworks, CMS, tiendas, código propio y procesos auxiliares.
+- Cronología interactiva, dos CVE y explicaciones sencilla/técnica.
+- Comparador numérico upstream con ramas desconocidas, versiones sin soporte y límites de backport.
+- Seguimiento oficial del **23 de octubre** sobre session upload progress.
+- Guía de seis capítulos; lectura y comprobaciones con progreso distinto.
+- Checklist Twinteach: **18 tareas, cinco secciones**, ayudas ampliables, notas, evidencias y cinco estados.
+- Modos DEMO y PLANTILLA separados, guardado local, recuperación de datos corruptos y funcionamiento en memoria si falla el almacenamiento.
+- Logros de sección con animación, reversión del progreso y prevención de celebraciones duplicadas.
+- Exportación JSON e informe HTML imprimible; notas escapadas al generar HTML.
+- Laboratorio: tres escenarios sintéticos, filtros, inspección, contexto, selección, hipótesis, pistas, feedback e histograma calculado.
+- Glosario, preferencias de ayuda, borrado de progreso con confirmación.
+- Rutas hash y base relativa para alojamiento estático.
+- CSS responsive, foco visible, controles nativos, enlace de salto y movimiento reducido.
 
-## Running end-to-end tests
+## Criterios de interpretación
 
-For end-to-end (e2e) testing, run:
+La aplicación **no ha auditado Twinteach**. Solo conoce Angular y Laravel por el enunciado. No conoce sus versiones, configuración, registros ni estado de compromiso.
 
-```bash
-ng e2e
-```
+El comprobador compara números escritos, sin verificar el servidor ni los paquetes del proveedor. Las versiones del 21 de octubre son las primeras corregidas para los dos CVE iniciales, no una garantía global de seguridad. El aviso adicional del día 23 aparece junto al resultado.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+El laboratorio es ficticio. Su evaluación comprueba selección, conclusión y presencia de una justificación; **no valida automáticamente la calidad semántica de un texto libre**.
 
-## Additional Resources
+Las notas de la checklist se guardan al pulsar **Guardar tarea**. No introduzcas secretos ni datos personales.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Estructura
+
+- `src/app/content/`: fuentes, cronología, versiones, checklist y casos.
+- `src/app/core/`: almacenamiento, progreso, comparación y exportación.
+- `src/app/shared/`: iconos SVG, ayudas, logros, anillo y tarea de auditoría.
+- `src/app/pages/`: páginas y navegación.
+- `scripts/`: compilación, pruebas y vista local de producción.
+- `docs/`: trazabilidad, revisión manual y publicación posterior.
+
+## Siguiente paso
+
+Aplica el código a tu carpeta y realiza la revisión visual de `docs/REVISION_MANUAL.md`. Después puedes seguir `docs/PUBLICAR_GITHUB_PAGES.md`. La plantilla de workflow está en `docs/deploy-pages.yml.example` y no se ejecuta mientras permanezca allí.

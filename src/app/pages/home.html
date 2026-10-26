@@ -1,0 +1,149 @@
+<section class="hero">
+  <div class="container hero-layout">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span class="status-dot"></span> VULNERABILIDAD EN PHP
+        <span class="eyebrow-divider">/</span> DOS CVE · UN INTÉRPRETE
+      </div>
+      <h1>
+        Comprende el<br />incidente <span class="cyan">PHP2Shell<span class="period">.</span></span>
+      </h1>
+      <p>
+        Qué ocurrió, a qué versiones afecta y cómo comprobar la protección de aplicaciones PHP,
+        incluido el backend Laravel de Twinteach.
+      </p>
+      <div class="button-row">
+        <a class="button primary" routerLink="/guia"
+          >{{ p.state().chapters.length ? 'Continuar guía' : 'Empezar guía' }}
+          <app-icon name="arrow" /></a
+        ><a class="button secondary" routerLink="/incidente"
+          >Ver resumen <app-icon name="book"
+        /></a>
+      </div>
+      <div class="hero-footnote">
+        <app-icon name="lock" /> Aprendizaje práctico. Sin conexiones a servidores.
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="visual-corner top">PHP / SECURITY BRIEFING</div>
+      <div class="orbital orbit-one"></div>
+      <div class="orbital orbit-two"></div>
+      <div class="orbit-cross"></div>
+      <div class="orbit-dot dot-one"></div>
+      <div class="orbit-dot dot-two"></div>
+      <div class="terminal-illustration">
+        <div class="terminal-title">
+          <span></span><span></span><span></span><small>runtime.check</small>
+        </div>
+        <div class="terminal-content">
+          <div class="big-terminal"><app-icon name="terminal" /></div>
+          <span class="mono">PHP_RUNTIME</span>
+          <div class="visual-code">
+            <span>01</span> identify_version<span>02</span> verify_patch<span>03</span>
+            document_evidence
+          </div>
+        </div>
+        <div class="terminal-shield"><app-icon name="shield" /></div>
+      </div>
+      <div class="floating-label label-left">
+        <span class="status-dot"></span> EVIDENCIA ANTES DE CONCLUIR
+      </div>
+      <div class="floating-label label-right"><span class="mono">2 CVE</span> / CVSS 4.0</div>
+      <div class="visual-corner bottom">ANÁLISIS EDUCATIVO <span>26.10.2026</span></div>
+    </div>
+  </div>
+</section>
+<section class="container scope-callout">
+  <div class="scope-icon"><app-icon name="layers" /></div>
+  <p>
+    <strong>El intérprete es la pieza común.</strong> PHP2Shell puede afectar a servicios que
+    ejecuten un PHP vulnerable, independientemente de su framework o CMS. El riesgo depende de la
+    versión y de las condiciones del entorno.
+  </p>
+  <a routerLink="/incidente">Ver el alcance <app-icon name="arrow" /></a>
+</section>
+<section class="container stats-grid" aria-label="Datos del incidente">
+  <a class="stat" routerLink="/vulnerabilidades"
+    ><span class="stat-symbol critical"><app-icon name="alert" /></span>
+    <div>
+      <strong>9,2<span> / 10</span></strong>
+      <p>CVSS 4.0 · cada vulnerabilidad</p>
+    </div>
+    <app-icon name="arrow" /></a
+  ><a class="stat" routerLink="/vulnerabilidades"
+    ><span class="stat-symbol"><app-icon name="code" /></span>
+    <div>
+      <strong>02 <span>CVE</span></strong>
+      <p>Fallos en el intérprete PHP</p>
+    </div>
+    <app-icon name="arrow" /></a
+  ><a class="stat" routerLink="/versiones"
+    ><span class="stat-symbol"><app-icon name="clock" /></span>
+    <div>
+      <strong>21 OCT <span>2026</span></strong>
+      <p>Publicación de los parches iniciales</p>
+    </div>
+    <app-icon name="arrow"
+  /></a>
+</section>
+<section class="container section-space">
+  <div class="section-heading">
+    <div>
+      <div class="eyebrow">DEL CONTEXTO A LA EVIDENCIA</div>
+      <h2>Explora. Comprueba. Investiga.</h2>
+    </div>
+    <a class="text-link" routerLink="/guia">Ver la ruta completa <app-icon name="arrow" /></a>
+  </div>
+  <div class="module-grid">
+    @for (m of modules; track m.path) {
+      <a class="module-card" [class]="'module-card ' + m.class" [routerLink]="m.path"
+        ><div class="module-top">
+          <span class="module-icon"><app-icon [name]="m.icon" /></span
+          ><span class="mono module-number">{{ m.n }}</span>
+        </div>
+        <div class="module-mini" aria-hidden="true">
+          @switch (m.class) {
+            @case ('version') {
+              <span class="mono mini-input">PHP 8.3.x</span><span class="mini-bar"></span
+              ><span class="mini-bar short"></span>
+            }
+            @case ('audit') {
+              <span class="mini-check">✓ <i></i></span><span class="mini-check">✓ <i></i></span
+              ><span class="mini-check pending">□ <i></i></span>
+            }
+            @case ('timeline') {
+              <div class="mini-timeline"><i></i><i></i><i></i><i></i></div>
+              <span class="mono">2024 <span class="float-right">2026</span></span>
+            }
+            @case ('lab') {
+              <span class="mini-log">10:31:14 <b>WEB</b> WARN</span
+              ><span class="mini-log">10:31:15 <b>PHP</b> WARN</span
+              ><span class="mini-log">10:31:18 <b>MON</b> ALERT</span>
+            }
+          }
+        </div>
+        <small class="card-tag">{{ m.tag }}</small>
+        <h3>{{ m.title }}</h3>
+        <p>{{ m.text }}</p>
+        <span class="card-cta">{{ m.cta }} <app-icon name="arrow" /></span
+      ></a>
+    }
+  </div>
+</section>
+<section class="container section-space">
+  <div class="learning-strip">
+    <div>
+      <span class="eyebrow">TU RUTA DE APRENDIZAJE</span>
+      <h2>Un método, de principio a fin.</h2>
+      <p>
+        {{ p.state().chapters.length }} de 6 capítulos completados · {{ p.count() }} de 18 tareas
+        documentadas
+      </p>
+    </div>
+    <div class="three-steps">
+      <span><i>1</i> Comprender</span><span><i>2</i> Verificar</span
+      ><span><i>3</i> Investigar</span>
+    </div>
+    <a class="button secondary" routerLink="/guia">Ir a la guía <app-icon name="arrow" /></a>
+  </div>
+</section>
