@@ -1,8 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { LearningVideoComponent } from '../shared/learning-video';
 import { RouterLink } from '@angular/router';
 import { IconComponent } from '../shared/ui';
 import { ProgressService } from '../core/progress';
-@Component({ imports: [RouterLink, IconComponent], templateUrl: './home.html' })
+@Component({
+  imports: [RouterLink, IconComponent, LearningVideoComponent],
+  templateUrl: './home.html',
+})
 export class HomePage {
   readonly p = inject(ProgressService);
   readonly modules = [

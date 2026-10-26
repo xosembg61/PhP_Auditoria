@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LearningVideoComponent } from '../shared/learning-video';
 import {
   SCENARIOS,
   CONCLUSIONS,
@@ -11,7 +12,13 @@ import { ProgressService } from '../core/progress';
 import { PageHeaderComponent, IconComponent, SourceRefsComponent } from '../shared/ui';
 const blank = (): LabAnswer => ({ selected: [], conclusion: '', justification: '', hint: 0 });
 @Component({
-  imports: [FormsModule, PageHeaderComponent, IconComponent, SourceRefsComponent],
+  imports: [
+    FormsModule,
+    PageHeaderComponent,
+    IconComponent,
+    SourceRefsComponent,
+    LearningVideoComponent,
+  ],
   templateUrl: './lab.html',
 })
 export class LabPage {

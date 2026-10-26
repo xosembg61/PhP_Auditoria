@@ -9,150 +9,11 @@ import {
 import { TIMELINE } from '../content/incident';
 import { REFERENCES, GLOSSARY } from '../content/references';
 import { ProgressService } from '../core/progress';
+import { LearningVideoComponent } from '../shared/learning-video';
+import { MEDIA_CREDITS } from '../content/media';
 const ui = [RouterLink, PageHeaderComponent, IconComponent, SourceRefsComponent];
 @Component({
-  imports: ui,
-  template: `<div class="container page">
-    <app-page-header
-      eyebrow="El incidente"
-      title="Dos fallos. Un punto en común: PHP."
-      description="PHP2Shell es el nombre usado para dos vulnerabilidades graves del intérprete. «php2bash» es el término del enunciado académico."
-    />
-    <div class="three-grid">
-      <article class="panel">
-        <span class="number-label">QUÉ</span>
-        <h2>El runtime</h2>
-        <p>El fallo reside en PHP. El nombre de la aplicación no determina la exposición.</p>
-      </article>
-      <article class="panel">
-        <span class="number-label">CUÁNDO</span>
-        <h2>21 octubre 2026</h2>
-        <p>
-          Publicación de los parches iniciales. La investigación y los intentos observados empezaron
-          antes.
-        </p>
-      </article>
-      <article class="panel">
-        <span class="number-label">IMPACTO</span>
-        <h2>RCE potencial</h2>
-        <p>
-          En condiciones de explotación, una petición puede llevar a ejecución de código con los
-          permisos del proceso.
-        </p>
-      </article>
-    </div>
-    <app-source-refs [ids]="['php', 'oom', 'state']" />
-    <section class="section-space">
-      <div class="section-heading">
-        <div>
-          <span class="eyebrow">ALCANCE TRANSVERSAL</span>
-          <h2>La misma dependencia, muchas aplicaciones.</h2>
-        </div>
-      </div>
-      <div class="ecosystem">
-        <div class="runtime-hub">
-          <app-icon name="code" /><strong>PHP</strong><span>INTÉRPRETE / RUNTIME</span>
-        </div>
-        <div class="ecosystem-branches">
-          @for (e of ecosystem; track e.name) {
-            <button [class.selected]="selected() === e.name" (click)="selected.set(e.name)">
-              <app-icon [name]="e.icon" /><strong>{{ e.name }}</strong
-              ><small>{{ e.examples }}</small>
-            </button>
-          }
-        </div>
-      </div>
-      <div class="callout">
-        <strong>{{ selected() }}</strong>
-        <p>
-          Identifica el PHP que ejecuta este servicio, confirma versión y proveedor del paquete y
-          revisa si incluye las correcciones. El framework, CMS o plugin actualizado no sustituye el
-          parche del intérprete.
-        </p>
-      </div>
-      <p>
-        No todo servicio PHP es explotable de la misma manera. Distingue runtime afectado,
-        superficie alcanzable, condiciones técnicas e indicios de ataque.
-      </p>
-    </section>
-    <section class="section-space">
-      <span class="eyebrow">CASO PRÁCTICO OBLIGATORIO</span>
-      <h2>¿Y en Twinteach?</h2>
-      <div class="architecture">
-        <div>
-          <app-icon name="code" /><strong>Angular</strong><small>Frontend / navegador</small>
-        </div>
-        <span aria-hidden="true">→</span>
-        <div>
-          <app-icon name="layers" /><strong>API HTTP</strong><small>Peticiones al backend</small>
-        </div>
-        <span aria-hidden="true">→</span>
-        <div class="highlight">
-          <app-icon name="terminal" /><strong>Laravel + PHP</strong
-          ><small>Runtime que debe comprobarse</small>
-        </div>
-      </div>
-      <div class="callout warning">
-        <strong>Arquitectura conceptual, no inventario verificado.</strong>
-        <p>
-          Solo conocemos Angular y Laravel por el enunciado. No se conocen versiones, configuración,
-          alojamiento ni registros reales de Twinteach.
-        </p>
-      </div>
-      <a class="button primary" routerLink="/auditoria"
-        >Abrir checklist de Twinteach <app-icon name="arrow"
-      /></a>
-    </section>
-    <section class="section-space">
-      <h2>Cuatro cosas que no conviene confundir</h2>
-      <div class="two-grid">
-        @for (c of concepts; track c.title) {
-          <article class="panel">
-            <h3>{{ c.title }}</h3>
-            <p>{{ c.text }}</p>
-          </article>
-        }
-      </div>
-      <div class="button-row">
-        <a class="button secondary" routerLink="/cronologia"
-          >Ver la cronología <app-icon name="clock" /></a
-        ><a class="text-link" routerLink="/vulnerabilidades"
-          >Entender cada CVE <app-icon name="arrow"
-        /></a>
-      </div>
-    </section>
-  </div>`,
-})
-export class IncidentPage {
-  readonly selected = signal('Frameworks');
-  readonly ecosystem = [
-    { name: 'Frameworks', examples: 'Laravel · Symfony · CodeIgniter', icon: 'layers' },
-    { name: 'CMS', examples: 'WordPress · Drupal · Joomla', icon: 'file' },
-    { name: 'Tiendas', examples: 'Magento · PrestaShop · WooCommerce', icon: 'lock' },
-    { name: 'Código propio', examples: 'APIs · paneles · PHP nativo', icon: 'code' },
-    { name: 'Auxiliares', examples: 'Colas · tareas · CLI', icon: 'terminal' },
-  ];
-  readonly concepts = [
-    {
-      title: 'Descubrimiento',
-      text: 'Se identifica y estudia un fallo. Un primer indicio no implica conocer ya todas sus rutas de explotación.',
-    },
-    {
-      title: 'Divulgación',
-      text: 'Se hace pública la información; puede ocurrir después de observaciones privadas e incluso intentos de ataque.',
-    },
-    {
-      title: 'Intento observado',
-      text: 'Se detecta actividad compatible con un ataque. No demuestra que tuviera éxito contra otro sistema.',
-    },
-    {
-      title: 'Compromiso confirmado',
-      text: 'Requiere evidencia sólida de una actuación no autorizada. Atribuirla a una CVE exige aún más datos.',
-    },
-  ];
-}
-@Component({
-  imports: ui,
+  imports: [...ui, LearningVideoComponent],
   template: `<div class="container page">
     <app-page-header
       eyebrow="Cronología"
@@ -190,6 +51,7 @@ export class IncidentPage {
         /></a>
       </article>
     </div>
+    <section class="section-space"><app-learning-video id="discovery" /></section>
   </div>`,
 })
 export class TimelinePage {
@@ -390,9 +252,30 @@ export class ConclusionsPage {
         de procedimiento se presentan como guía; los registros del laboratorio son inventados.
       </p>
     </section>
+    <section class="section-space">
+      <h2>Créditos de las imágenes</h2>
+      <div class="two-grid">
+        @for (c of credits; track c.local) {
+          <figure class="panel credited-photo">
+            <img [src]="c.local" [alt]="c.title" loading="lazy" />
+            <figcaption>
+              <strong>{{ c.title }}</strong>
+              <p>{{ c.note }}</p>
+              <a [href]="c.url" target="_blank" rel="noopener noreferrer">{{ c.author }}</a> ·
+              <a [href]="c.licenseUrl" target="_blank" rel="noopener noreferrer">{{ c.license }}</a>
+            </figcaption>
+          </figure>
+        }
+      </div>
+      <p>
+        Logotipo PHP: Colin Viebrock, CC BY-SA 4.0, sin modificar. Fotografías de contexto: no son
+        Twinteach ni evidencias del incidente.
+      </p>
+    </section>
   </div>`,
 })
 export class SourcesPage {
+  readonly credits = MEDIA_CREDITS;
   readonly sources = REFERENCES;
 }
 @Component({

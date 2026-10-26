@@ -1,0 +1,345 @@
+<div class="container page incident-page">
+  <app-page-header
+    eyebrow="El incidente"
+    title="PHP2Shell, explicado desde cero."
+    description="Qué ocurrió dentro de PHP, por qué importa para muchas webs y cómo pasar de la noticia a una comprobación con evidencia."
+  />
+  <section class="incident-intro">
+    <div>
+      <span class="eyebrow">LA IDEA EN 30 SEGUNDOS</span>
+      <h2>El problema está en el motor que ejecuta la web.</h2>
+      <p>
+        Una aplicación puede estar bien escrita y, aun así, depender de un intérprete con un fallo.
+        PHP2Shell reúne dos vulnerabilidades de <strong>PHP</strong> que, en determinadas
+        condiciones, permiten ejecutar código en el servidor sin iniciar sesión.
+      </p>
+      <p>
+        La pregunta útil es:
+        <strong>¿qué PHP usa realmente cada servicio y qué corrección contiene?</strong> Después hay
+        otra pregunta distinta: ¿hay evidencia de que alguien lo haya aprovechado?
+      </p>
+      <small
+        >En el enunciado aparece «php2bash»; aquí se utiliza el nombre PHP2Shell y los
+        identificadores de los avisos oficiales.</small
+      >
+    </div>
+    <figure class="php-image">
+      <img
+        src="assets/images/php-logo.svg"
+        alt="Logotipo oficial del lenguaje PHP"
+        width="260"
+        height="140"
+      />
+      <figcaption>
+        PHP · Colin Viebrock ·
+        <a href="https://www.php.net/download-logos.php" target="_blank" rel="noopener noreferrer"
+          >CC BY-SA 4.0 / fuente</a
+        >
+      </figcaption>
+      <span class="badge">INTÉRPRETE / RUNTIME</span>
+    </figure>
+  </section>
+  <nav class="incident-index" aria-label="Índice del incidente">
+    <button (click)="jump('inc-basics')">1. Antes de empezar</button
+    ><button (click)="jump('inc-how')">2. Cómo sucede</button
+    ><button (click)="jump('inc-history')">3. Cómo se descubrió</button
+    ><button (click)="jump('inc-scope')">4. A quién afecta</button
+    ><button (click)="jump('inc-twinteach')">5. Qué comprobar</button
+    ><button (click)="jump('inc-faq')">6. Dudas frecuentes</button>
+  </nav>
+  <div class="three-grid incident-summary">
+    <article class="panel">
+      <span class="number-label">QUÉ</span>
+      <h2>Dos fallos del runtime</h2>
+      <p>Están en el intérprete PHP, no se definen por el nombre del framework o CMS.</p>
+    </article>
+    <article class="panel">
+      <span class="number-label">CUÁNDO</span>
+      <h2>21 octubre 2026</h2>
+      <p>
+        Se publicaron los parches iniciales. Investigación, observación y seguimiento tienen otras
+        fechas.
+      </p>
+    </article>
+    <article class="panel">
+      <span class="number-label">IMPACTO</span>
+      <h2>Ejecución de código</h2>
+      <p>
+        El alcance depende de las condiciones y de los permisos del proceso. No implica
+        automáticamente control como administrador.
+      </p>
+    </article>
+  </div>
+  <app-source-refs [ids]="['php', 'oom', 'state']" />
+  <section class="section-space">
+    <h2 id="inc-basics" tabindex="-1">Antes de empezar: cuatro palabras útiles.</h2>
+    <div class="incident-terms">
+      @for (t of terms; track t.term) {
+        <article>
+          <span>{{ t.term }}</span>
+          <p>{{ t.meaning }}</p>
+        </article>
+      }
+    </div>
+    <div class="incident-analogy">
+      <span class="eyebrow">UNA COMPARACIÓN SENCILLA</span>
+      <h3>La aplicación es la receta; PHP es la cocina que la prepara.</h3>
+      <p>
+        Corregir una receta no repara automáticamente una pieza defectuosa de la cocina. Del mismo
+        modo, actualizar Laravel o un CMS no acredita que PHP esté corregido.
+      </p>
+      <small
+        >Es una analogía para separar responsabilidades. La explotación real depende de rutas
+        técnicas concretas, no de que toda petición produzca un fallo.</small
+      >
+    </div>
+  </section>
+  <section class="section-space">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">ESQUEMA INTERACTIVO · SIN EJECUTAR CÓDIGO</span>
+        <h2 id="inc-how" tabindex="-1">¿Cómo pasa una petición a ser un riesgo?</h2>
+      </div>
+      <a class="text-link" routerLink="/vulnerabilidades"
+        >Ver los dos CVE <app-icon name="arrow"
+      /></a>
+    </div>
+    <div class="incident-flow-tabs" role="group" aria-label="Escenarios de gestión de memoria">
+      @for (f of flows; track f.id) {
+        <button
+          [class.active]="flowId() === f.id"
+          [attr.aria-pressed]="flowId() === f.id"
+          (click)="flowId.set(f.id)"
+        >
+          {{ f.label }}
+        </button>
+      }
+    </div>
+    <div class="panel incident-flow-panel" aria-live="polite">
+      <h3>{{ flow().title }}</h3>
+      <p>{{ flow().description }}</p>
+      <ol class="incident-flow">
+        @for (s of flow().steps; track s.title; let i = $index) {
+          <li>
+            <span>{{ i + 1 }}</span>
+            <div>
+              <h4>{{ s.title }}</h4>
+              <p>{{ s.text }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+      <div class="callout">
+        <strong>Qué debes entender</strong>
+        <p>{{ flow().lesson }}</p>
+      </div>
+      <app-source-refs [ids]="flow().sources" />
+    </div>
+    <div class="callout warning">
+      <strong>Fallo técnico, exposición y ataque no son lo mismo.</strong>
+      <p>
+        El esquema explica una causa interna. No contiene un exploit, no envía peticiones y no
+        demuestra que un servidor concreto sea explotable.
+      </p>
+    </div>
+  </section>
+  <section class="section-space">
+    <span class="eyebrow">CONSECUENCIAS POSIBLES</span>
+    <h2>¿Por qué se considera grave?</h2>
+    <div class="three-grid impact-grid">
+      <article class="panel">
+        <app-icon name="search" />
+        <h3>Acceso a información</h3>
+        <p>
+          La ejecución no autorizada o la exposición de memoria puede poner en riesgo datos
+          accesibles al proceso.
+        </p>
+      </article>
+      <article class="panel">
+        <app-icon name="file" />
+        <h3>Cambios no autorizados</h3>
+        <p>
+          Un atacante podría actuar sobre recursos a los que ese proceso tenga permisos de acceso o
+          escritura.
+        </p>
+      </article>
+      <article class="panel">
+        <app-icon name="alert" />
+        <h3>Interrupción del servicio</h3>
+        <p>
+          También puede haber fallos de procesos o pérdida de disponibilidad. Un error aislado no
+          confirma su causa.
+        </p>
+      </article>
+    </div>
+    <p>
+      «Sin autenticación» significa que el ataque puede no necesitar una sesión de usuario en la
+      aplicación. <strong>No significa que todos los sitios hayan sido comprometidos.</strong> CVSS
+      9,2 expresa gravedad técnica, no una probabilidad del 92 %.
+    </p>
+    <app-source-refs [ids]="['oom', 'state']" />
+  </section>
+  <section class="section-space">
+    <span class="eyebrow">INVESTIGACIÓN, NO UN ÚNICO MOMENTO</span>
+    <h2 id="inc-history" tabindex="-1">¿Por qué y cuándo se descubrió?</h2>
+    <div class="two-grid">
+      <article class="panel">
+        <h3>Un indicio no muestra siempre todo el impacto.</h3>
+        <p>
+          En 2024 aparecieron indicios del problema OOM durante la corrección de hallazgos de una
+          auditoría externa. La dificultad estaba en demostrar una ruta concreta y corregir el motor
+          sin introducir otros problemas.
+        </p>
+        <p>
+          Una nueva auditoría comenzó el 30 de julio de 2026. El 11 de agosto, un investigador de
+          Calif comunicó una vía de RCE; otras aportaciones coordinadas ampliaron la investigación.
+        </p>
+        <app-source-refs [ids]="['foundation']" />
+      </article>
+      <article class="panel">
+        <h3>Observar, divulgar y corregir son hitos distintos.</h3>
+        <p>
+          AWS identificó retrospectivamente un intento del 17 de octubre en MadPot. Ese dato no
+          prueba un compromiso de Twinteach.
+        </p>
+        <p>
+          Los avisos y parches iniciales llegaron el 21 de octubre. PHP añadió un seguimiento de
+          sesiones el día 23; por eso el número de versión no debe leerse como una garantía global.
+        </p>
+        <app-source-refs [ids]="['aws', 'php']" />
+      </article>
+    </div>
+    <div class="button-row">
+      <a class="button secondary" routerLink="/cronologia"
+        >Explorar la cronología <app-icon name="clock"
+      /></a>
+    </div>
+    <app-learning-video id="discovery" />
+  </section>
+  <section class="section-space">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">ALCANCE TRANSVERSAL</span>
+        <h2 id="inc-scope" tabindex="-1">Muchas aplicaciones, una dependencia común.</h2>
+      </div>
+    </div>
+    <div class="ecosystem">
+      <div class="runtime-hub">
+        <img src="assets/images/php-logo.svg" alt="PHP" width="115" height="62" /><span
+          >INTÉRPRETE / RUNTIME</span
+        >
+      </div>
+      <div class="ecosystem-branches">
+        @for (e of ecosystem; track e.name) {
+          <button
+            [class.selected]="selected() === e.name"
+            [attr.aria-pressed]="selected() === e.name"
+            (click)="selected.set(e.name)"
+          >
+            <app-icon [name]="e.icon" /><strong>{{ e.name }}</strong
+            ><small>{{ e.examples }}</small>
+          </button>
+        }
+      </div>
+    </div>
+    <div class="callout ecosystem-detail" aria-live="polite">
+      <strong>{{ selection().name }} · Qué revisar</strong>
+      <p>{{ selection().check }}</p>
+      <p><strong>Error frecuente:</strong> {{ selection().trap }}</p>
+    </div>
+    <div class="four-questions">
+      <h3>Cuatro preguntas, en este orden.</h3>
+      <ol>
+        <li>¿Este componente utiliza PHP?</li>
+        <li>¿Qué versión y paquete ejecuta realmente?</li>
+        <li>¿Qué condiciones o superficie pueden estar expuestas?</li>
+        <li>¿Qué evidencia existe de un intento o un compromiso?</li>
+      </ol>
+    </div>
+  </section>
+  <section class="section-space">
+    <span class="eyebrow">CASO PRÁCTICO OBLIGATORIO</span>
+    <h2 id="inc-twinteach" tabindex="-1">¿Cómo se aplica a Twinteach?</h2>
+    <div class="architecture">
+      <div><app-icon name="code" /><strong>Angular</strong><small>Frontend / navegador</small></div>
+      <span aria-hidden="true">→</span>
+      <div>
+        <app-icon name="layers" /><strong>API HTTP</strong><small>Peticiones al backend</small>
+      </div>
+      <span aria-hidden="true">→</span>
+      <div class="highlight">
+        <app-icon name="terminal" /><strong>Laravel + PHP</strong
+        ><small>Runtime que debe comprobarse</small>
+      </div>
+    </div>
+    <div class="callout warning">
+      <strong>Arquitectura conceptual, no inventario verificado.</strong>
+      <p>
+        Solo conocemos Angular y Laravel por el enunciado. No se conocen versiones, configuración,
+        alojamiento, registros ni estado de compromiso reales.
+      </p>
+    </div>
+    <div class="two-grid">
+      <article class="panel">
+        <h3>Si estás estudiando el caso</h3>
+        <p>
+          Aprende a pedir el dato adecuado: runtime web, SAPI, paquete, correcciones, procesos y
+          registros. Si no tienes acceso, documenta el bloqueo; no inventes una auditoría.
+        </p>
+        <a class="text-link" routerLink="/aula" [queryParams]="{ tab: 'plan' }"
+          >Preparar mi siguiente paso <app-icon name="arrow"
+        /></a>
+      </article>
+      <article class="panel">
+        <h3>Si administras el entorno</h3>
+        <p>
+          Inventaría todas las copias, contrasta paquetes y backports, coordina la actualización y
+          verifica el servicio. Investiga los indicios por separado de la aplicación del parche.
+        </p>
+        <a class="text-link" routerLink="/auditoria"
+          >Abrir checklist de Twinteach <app-icon name="arrow"
+        /></a>
+      </article>
+    </div>
+  </section>
+  <section class="section-space">
+    <h2>Cuatro conceptos que conviene separar.</h2>
+    <div class="two-grid">
+      @for (c of concepts; track c.title) {
+        <article class="panel">
+          <h3>{{ c.title }}</h3>
+          <p>{{ c.text }}</p>
+        </article>
+      }
+    </div>
+  </section>
+  <section class="section-space">
+    <span class="eyebrow">SIN DAR NADA POR SUPUESTO</span>
+    <h2 id="inc-faq" tabindex="-1">Las dudas habituales, respondidas.</h2>
+    <div class="incident-faq">
+      @for (f of faqs; track f.q) {
+        <app-info-expander [title]="f.q"
+          ><p>{{ f.a }}</p>
+          <app-source-refs [ids]="f.sources"
+        /></app-info-expander>
+      }
+    </div>
+  </section>
+  <section class="section-space incident-next">
+    <div>
+      <span class="eyebrow">AHORA YA SABES DÓNDE MIRAR</span>
+      <h2>Del contexto a la comprobación.</h2>
+      <p>
+        Primero entiende el componente. Después documenta su estado y revisa las evidencias
+        disponibles.
+      </p>
+    </div>
+    <div class="button-row">
+      <a class="button primary" routerLink="/versiones"
+        >Comparar una versión <app-icon name="arrow" /></a
+      ><a class="button secondary" routerLink="/laboratorio"
+        >Interpretar indicios <app-icon name="search"
+      /></a>
+    </div>
+  </section>
+</div>

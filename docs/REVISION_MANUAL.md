@@ -1,6 +1,6 @@
-# Revisión visual y funcional pendiente en el navegador del propietario
+# Revisión visual y funcional
 
-Las 72 pruebas automatizadas y la compilación han pasado. El entorno de creación no pudo conectar el navegador con el servidor local, así que **esta lista no se presenta como ya realizada**.
+Las 79 pruebas automatizadas y la compilación han pasado. Se ha realizado una revisión visual representativa en navegador: portada e incidente a 390 px, guía a 900 px y portada, incidente y auditoría a 1440 px. Se comprobó el menú móvil, el cambio de esquema del incidente y la reproducción del vídeo de Wiz. La lista siguiente conserva las comprobaciones completas pendientes; no se presenta toda la matriz como realizada.
 
 ## Inicio y navegación
 
@@ -79,3 +79,17 @@ Las 72 pruebas automatizadas y la compilación han pasado. El entorno de creaci�
 - [ ] Las dos descargas de materiales abren archivos con acentos, tablas y ejemplos legibles.
 - [ ] El informe HTML imprime o se guarda en PDF con Ctrl+P.
 - [ ] Las fuentes externas abren la documentación primaria correcta.
+
+## Multimedia e incidente ampliado
+
+- [x] Portada e incidente a 390 px sin desbordamiento horizontal.
+- [x] Menú móvil abre, navega al incidente y se cierra.
+- [x] Los tres esquemas cambian la explicación sin modificar tareas de auditoría (pruebas automáticas).
+- [x] El reproductor no existe antes de pulsar y desaparece al ocultarlo (pruebas automáticas).
+- [x] El vídeo de Wiz reproduce imagen y avanza dentro del incidente.
+- [x] Fotografía de portada y logotipo PHP cargan desde archivos incluidos.
+- [ ] Reproducir los otros tres recursos en el navegador del propietario.
+- [ ] Comprobar todas las rutas y sus estados a 320, 390, 900 y 1440 px.
+- [ ] Comprobar impresión del informe desde el navegador del propietario.
+
+Se comprobó el laboratorio a 320 px después de corregir el contenedor de tabla: la tabla conserva su desplazamiento interno sin ampliar la página.

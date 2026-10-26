@@ -1497,6 +1497,7 @@ label:not(:first-child) {
   font-size: 20px;
 }
 .table-wrap {
+  position: relative;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 10px;

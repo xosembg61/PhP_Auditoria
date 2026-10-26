@@ -8,7 +8,7 @@ export const routes: Routes = [
   {
     path: 'incidente',
     title: 'El incidente · PHP2Shell',
-    loadComponent: () => import('./pages/knowledge').then((m) => m.IncidentPage),
+    loadComponent: () => import('./pages/incident').then((m) => m.IncidentPage),
   },
   {
     path: 'cronologia',

@@ -5,7 +5,7 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 | Apartados                         | Implementación                                                                                                                                |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1–2. Visión y rigor técnico       | Fuentes primarias en content/references.ts; incidente transversal; datos Twinteach desconocidos                                               |
-| 3–5. Diseño, navegación y portada | Cabecera, tema marino/cian/coral, cuatro módulos, CSS responsive, terminal CSS/SVG, tres métricas                                             |
+| 3–5. Diseño, navegación y portada | Cabecera, tema claro azul/turquesa/lavanda, fotografía real, cuatro módulos, CSS responsive, tres métricas                                             |
 | 6. Historia                       | Ocho hitos seleccionables con fuentes, incluido seguimiento del día 23                                                                        |
 | 7. Vulnerabilidades               | Dos CVE, modo sencillo/técnico y pregunta de comprensión                                                                                      |
 | 8. Versiones                      | Comparador numérico, tabla única, rama/entrada inválida, backport, CLI frente a web                                                           |
@@ -16,8 +16,8 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 | 14. Conclusiones y fuentes        | Páginas de conclusiones, bibliografía y fecha de revisión                                                                                     |
 | 15–17. Implementación y calidad   | Angular standalone, signals, servicios, carga de rutas, localStorage validado, exportaciones, foco y etiquetas                                |
 | 18. Publicación                   | Guía y workflow de ejemplo inactivo; hash y base relativa; sin despliegue                                                                     |
-| 19. Aceptación                    | 72 pruebas automatizadas; revisión visual expresamente pendiente                                                                              |
-| 20–22. Decisiones                 | Nombre PHP2SHELL; tema oscuro; sin sonido; JSON y HTML; tres casos; ninguna cuenta GitHub presupuesta                                         |
+| 19. Aceptación                    | 79 pruebas automatizadas; revisión visual representativa en navegador                                                                              |
+| 20–22. Decisiones                 | Nombre PHP2SHELL; tema claro por petición posterior; sin sonido; JSON y HTML; tres casos; ninguna cuenta GitHub presupuesta                                         |
 
 ## Ajustes frente a la especificación original
 
@@ -31,10 +31,16 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 
 ## Validación realizada
 
-72 pruebas / 9 archivos de pruebas aprobadas con Vitest y Angular. Compilación de producción sin errores. Pruebas de todas las rutas y formularios en DOM de pruebas.
+79 pruebas / 11 archivos de pruebas aprobadas con Vitest y Angular. Compilación de producción sin errores. Pruebas de todas las rutas y formularios en DOM de pruebas.
 
-**Límite:** sin validación visual real de escritorio/móvil ni prueba pública de GitHub Pages. La publicación no se ha realizado.
+**Revisión visual:** portada e incidente en móvil de 390 px; guía a 900 px; portada, incidente y auditoría a 1440 px. El vídeo de Wiz se reprodujo dentro de la página. No se ha completado toda la matriz manual ni se ha publicado en GitHub Pages.
 
 ## Ampliación didáctica posterior
 
 Se añadió el Aula práctica con seis lecciones de dos niveles, pasos y ejemplos interpretados, un plan orientativo, cuatro ejercicios, dos materiales descargables y lecturas comentadas. Ver MEJORAS_APRENDIZAJE.md. La generación del plan no verifica ni modifica tareas de auditoría.
+
+## Incidente y presentación multimedia
+
+La petición posterior sustituye el tema oscuro por una presentación clara. Se añaden fotografías reales con créditos, cuatro recursos audiovisuales verificados, notas propias en español y distribución contextual. El incidente conserva el material anterior y suma explicaciones iniciales, tres esquemas, consecuencias, historia, perfiles de actuación y ocho preguntas frecuentes. No se utilizan imágenes de IA. Ver RECURSOS_VISUALES.md.
+
+Se comprobó el laboratorio a 320 px después de corregir el contenedor de tabla: la tabla conserva su desplazamiento interno sin ampliar la página.

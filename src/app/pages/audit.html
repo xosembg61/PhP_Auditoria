@@ -4,6 +4,20 @@
     title="Checklist de auditoría para Twinteach"
     description="18 comprobaciones, cinco etapas y una regla: cada conclusión necesita evidencia. Esta web no ha revisado los sistemas reales de Twinteach."
   />
+  <figure class="audit-photo-band">
+    <img
+      src="assets/images/servidores-nersc.jpg"
+      alt="Frontal de varios racks de servidores en NERSC"
+      width="1280"
+      height="850"
+      loading="lazy"
+    />
+    <figcaption>
+      <strong>Un servidor no representa todo el inventario.</strong>
+      <p>Relaciona servicios, procesos y paquetes antes de concluir.</p>
+      <small>Foto real de contexto · NERSC, 2011 · Derrick Coetzee / CC0. No es Twinteach.</small>
+    </figcaption>
+  </figure>
   <div class="audit-toolbar">
     <div class="segmented" aria-label="Modo de trabajo">
       <button [attr.aria-pressed]="p.mode() === 'demo'" (click)="changeMode('demo')">

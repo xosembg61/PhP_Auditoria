@@ -1,10 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CHAPTERS } from '../content/incident';
+import { LearningVideoComponent } from '../shared/learning-video';
 import { ProgressService } from '../core/progress';
 import { PageHeaderComponent, IconComponent, InfoExpanderComponent } from '../shared/ui';
 @Component({
-  imports: [RouterLink, PageHeaderComponent, IconComponent, InfoExpanderComponent],
+  imports: [
+    RouterLink,
+    PageHeaderComponent,
+    IconComponent,
+    InfoExpanderComponent,
+    LearningVideoComponent,
+  ],
   template: `<div class="container page">
     <app-page-header
       eyebrow="Guía"
@@ -48,6 +55,20 @@ import { PageHeaderComponent, IconComponent, InfoExpanderComponent } from '../sh
         </button>
       </div>
     </div>
+    <section class="section-space guide-video">
+      <app-learning-video
+        [id]="
+          active() === 0
+            ? 'php-intro'
+            : active() === 1
+              ? 'laravel-intro'
+              : active() === 4
+                ? 'investigation'
+                : 'discovery'
+        "
+        [compact]="true"
+      />
+    </section>
     <div class="guide-progress">
       <span class="badge">{{ p.mode() === 'demo' ? 'DEMO' : 'PLANTILLA' }}</span
       ><span>Aprendizaje: {{ p.state().chapters.length }} / 6 capítulos</span

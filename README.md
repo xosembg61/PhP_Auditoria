@@ -5,9 +5,9 @@ Aplicación **Angular 22 real**, TypeScript y CSS, creada siguiendo la especific
 ## Estado de entrega
 
 - Código terminado y compilación de producción comprobada.
-- **72 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
+- **79 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
 - Revisión editorial con fuentes primarias el **26 de octubre de 2026**.
-- Revisión visual de navegador pendiente: el entorno de creación no pudo conectar con su propio servidor local. No se han validado visualmente móvil, tablet y escritorio.
+- Revisión visual real: portada e incidente a 390 px, guía a 900 px, laboratorio a 320 px y portada, incidente y auditoría a 1440 px. Reproducción del vídeo de Wiz comprobada. La lista manual conserva otras comprobaciones pendientes.
 - Sin commit, push ni publicación. No existe workflow activo de despliegue.
 - El proyecto original indicado por el propietario no se ha modificado, porque estaba fuera de las rutas de escritura del entorno.
 
@@ -55,6 +55,8 @@ El script de pruebas usa una carpeta temporal dentro del proyecto para evitar re
 ## Funciones
 
 - Portada con acceso a los cuatro módulos principales.
+- Tema claro con fotografías reales, colores alegres y recursos audiovisuales repartidos según el contexto.
+- Incidente ampliado: glosario inicial, analogía, tres esquemas de memoria, descubrimiento, consecuencias, preguntas frecuentes y pasos por perfil.
 - Incidente y alcance transversal: frameworks, CMS, tiendas, código propio y procesos auxiliares.
 - Cronología interactiva, dos CVE y explicaciones sencilla/técnica.
 - Comparador numérico upstream con ramas desconocidas, versiones sin soporte y límites de backport.
@@ -90,7 +92,7 @@ Las notas de la checklist se guardan al pulsar **Guardar tarea**. No introduzcas
 
 ## Siguiente paso
 
-Aplica el código a tu carpeta y realiza la revisión visual de `docs/REVISION_MANUAL.md`. Después puedes seguir `docs/PUBLICAR_GITHUB_PAGES.md`. La plantilla de workflow está en `docs/deploy-pages.yml.example` y no se ejecuta mientras permanezca allí.
+Aplica el código a tu carpeta y completa las comprobaciones pendientes de `docs/REVISION_MANUAL.md`. Después puedes seguir `docs/PUBLICAR_GITHUB_PAGES.md`. La plantilla de workflow está en `docs/deploy-pages.yml.example` y no se ejecuta mientras permanezca allí.
 
 ## Ampliación didáctica
 
@@ -100,4 +102,4 @@ Incluye dos materiales listos para descargar en public/materiales: PHP2Shell_Gui
 
 El plan y la solicitud al responsable se descargan localmente. No envían mensajes, no revisan servidores y no completan tareas de auditoría.
 
-Detalles: docs/MEJORAS_APRENDIZAJE.md.
+Detalles: docs/MEJORAS_APRENDIZAJE.md. Créditos, licencias y distribución multimedia: docs/RECURSOS_VISUALES.md.

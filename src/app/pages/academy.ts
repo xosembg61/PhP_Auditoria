@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LearningVideoComponent } from '../shared/learning-video';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LESSONS, EVIDENCE_DRILLS } from '../content/learning';
 import { refById } from '../content/references';
@@ -22,6 +23,7 @@ import {
 @Component({
   imports: [
     FormsModule,
+    LearningVideoComponent,
     RouterLink,
     PageHeaderComponent,
     IconComponent,

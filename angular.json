@@ -2,8 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm",
-    "analytics": "9d212e7c-4717-4af7-8f58-5d8df899fa2e"
+    "packageManager": "npm"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -25,7 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"],
+            "styles": ["src/styles.css", "src/light-theme.css"],
             "security": {
               "allowedHosts": []
             }

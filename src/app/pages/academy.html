@@ -71,6 +71,18 @@
               }
             </section>
           }
+          <app-learning-video
+            [id]="
+              lessonIndex() === 0
+                ? 'php-intro'
+                : lessonIndex() === 1
+                  ? 'laravel-intro'
+                  : lessonIndex() === 4
+                    ? 'investigation'
+                    : 'discovery'
+            "
+            [compact]="true"
+          />
           <h3 class="walkthrough-title">Cómo trabajar este paso</h3>
           <ol class="lesson-walkthrough">
             @for (s of lesson().steps; track s.title; let i = $index) {
@@ -315,6 +327,20 @@
       /></a>
     }
     @if (activeTab() === 'resources') {
+      <div class="callout">
+        <strong>¿Buscas vídeos breves en TikTok?</strong>
+        <p>
+          Puedes explorar los resultados de la plataforma. Estos resultados no se han podido
+          revisar; contrasta sus afirmaciones con las fuentes oficiales.
+        </p>
+        <a
+          class="text-link"
+          href="https://www.tiktok.com/search?q=PHP2Shell"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Buscar PHP2Shell en TikTok <app-icon name="external"
+        /></a>
+      </div>
       <section class="report-downloads two-grid">
         <article class="panel">
           <span class="eyebrow">PRIMERA LECTURA</span>

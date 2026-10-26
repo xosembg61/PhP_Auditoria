@@ -24,33 +24,19 @@
         <app-icon name="lock" /> Aprendizaje práctico. Sin conexiones a servidores.
       </div>
     </div>
-    <div class="hero-visual" aria-hidden="true">
-      <div class="visual-corner top">PHP / SECURITY BRIEFING</div>
-      <div class="orbital orbit-one"></div>
-      <div class="orbital orbit-two"></div>
-      <div class="orbit-cross"></div>
-      <div class="orbit-dot dot-one"></div>
-      <div class="orbit-dot dot-two"></div>
-      <div class="terminal-illustration">
-        <div class="terminal-title">
-          <span></span><span></span><span></span><small>runtime.check</small>
-        </div>
-        <div class="terminal-content">
-          <div class="big-terminal"><app-icon name="terminal" /></div>
-          <span class="mono">PHP_RUNTIME</span>
-          <div class="visual-code">
-            <span>01</span> identify_version<span>02</span> verify_patch<span>03</span>
-            document_evidence
-          </div>
-        </div>
-        <div class="terminal-shield"><app-icon name="shield" /></div>
-      </div>
-      <div class="floating-label label-left">
-        <span class="status-dot"></span> EVIDENCIA ANTES DE CONCLUIR
-      </div>
-      <div class="floating-label label-right"><span class="mono">2 CVE</span> / CVSS 4.0</div>
-      <div class="visual-corner bottom">ANÁLISIS EDUCATIVO <span>26.10.2026</span></div>
-    </div>
+    <figure class="hero-photograph">
+      <img
+        src="assets/images/tecnico-nersc.jpg"
+        alt="Técnico trabajando con un portátil junto a servidores en NERSC"
+        width="1280"
+        height="850"
+        fetchpriority="high"
+      />
+      <figcaption>
+        Fotografía real · NERSC, 2011 · Derrick Coetzee / CC0. Imagen de contexto, no de Twinteach.
+      </figcaption>
+      <span class="photo-sticker">Aprender también es<br />hacer mejores preguntas.</span>
+    </figure>
   </div>
 </section>
 <section class="container scope-callout">
@@ -160,4 +146,13 @@
     </div>
     <a class="button primary" routerLink="/aula">Entrar al aula <app-icon name="book" /></a>
   </div>
+</section>
+<section class="container section-space home-video-section">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">ANTES DE LA VULNERABILIDAD</span>
+      <h2>¿Qué hace PHP en una web?</h2>
+    </div>
+  </div>
+  <app-learning-video id="php-intro" />
 </section>
