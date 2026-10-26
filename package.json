@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "node scripts/test.mjs",
-    "preview": "node scripts/preview.mjs"
+    "preview": "node scripts/preview.mjs",
+    "export:guides": "node scripts/export-study-guides.mjs"
   },
   "private": true,
   "packageManager": "npm@11.19.0",

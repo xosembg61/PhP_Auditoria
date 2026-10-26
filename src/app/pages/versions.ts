@@ -113,6 +113,18 @@ import {
         }
       </section>
     </div>
+    <div class="callout">
+      <strong
+        >¿El paquete tiene un número anterior pero el proveedor dice que está corregido?</strong
+      >
+      <p>
+        Consulta el ejemplo documentado de Ubuntu y aprende a distinguir número base, revisión de
+        paquete y servicio efectivo.
+      </p>
+      <a class="text-link" routerLink="/aula" [queryParams]="{ lesson: 2 }"
+        >Entender los backports <app-icon name="arrow"
+      /></a>
+    </div>
     <div class="callout warning update-notice">
       <strong>Seguimiento oficial · 23 de octubre de 2026</strong>
       <p>

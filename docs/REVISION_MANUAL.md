@@ -1,6 +1,6 @@
 # Revisión visual y funcional pendiente en el navegador del propietario
 
-Las 54 pruebas automatizadas y la compilación han pasado. El entorno de creación no pudo conectar el navegador con el servidor local, así que **esta lista no se presenta como ya realizada**.
+Las 72 pruebas automatizadas y la compilación han pasado. El entorno de creación no pudo conectar el navegador con el servidor local, así que **esta lista no se presenta como ya realizada**.
 
 ## Inicio y navegación
 
@@ -63,3 +63,19 @@ Las 54 pruebas automatizadas y la compilación han pasado. El entorno de creaci�
 - [ ] No se introducen datos sensibles en notas.
 - [ ] Borrar progreso pide confirmación y afecta solo a esta aplicación.
 - [ ] La preferencia de ayudas se conserva.
+
+## Aula práctica e informes
+
+- [ ] Los accesos desde portada, guía, versiones y checklist abren el aula o la lección adecuada.
+- [ ] Las cuatro secciones del aula se pueden recorrer con teclado.
+- [ ] Cambiar nivel conserva la misma afirmación factual y muestra el detalle técnico.
+- [ ] Los bloques de consola se leen en móvil sin desbordar toda la página.
+- [ ] Cada ejemplo indica qué permite y qué no permite concluir.
+- [ ] Las preguntas explican el razonamiento y no completan tareas de auditoría.
+- [ ] El formulario del plan exige cinco respuestas válidas y admite desconocimiento.
+- [ ] Cambiar una respuesta oculta el plan anterior hasta regenerarlo.
+- [ ] Con actividad no autorizada, la primera acción es coordinar respuesta y preservar evidencia.
+- [ ] El plan y la solicitud descargan correctamente como Markdown.
+- [ ] Las dos descargas de materiales abren archivos con acentos, tablas y ejemplos legibles.
+- [ ] El informe HTML imprime o se guarda en PDF con Ctrl+P.
+- [ ] Las fuentes externas abren la documentación primaria correcta.

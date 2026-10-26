@@ -21,6 +21,7 @@ describe('rutas de la aplicación', () => {
     '/conclusiones',
     '/fuentes',
     '/ayuda',
+    '/aula',
     '/no-existe',
   ])('renderiza %s con un solo H1', async (path) => {
     const harness = await RouterTestingHarness.create(path);

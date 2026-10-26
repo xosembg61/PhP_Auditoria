@@ -5,7 +5,7 @@ Aplicación **Angular 22 real**, TypeScript y CSS, creada siguiendo la especific
 ## Estado de entrega
 
 - Código terminado y compilación de producción comprobada.
-- **54 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
+- **72 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
 - Revisión editorial con fuentes primarias el **26 de octubre de 2026**.
 - Revisión visual de navegador pendiente: el entorno de creación no pudo conectar con su propio servidor local. No se han validado visualmente móvil, tablet y escritorio.
 - Sin commit, push ni publicación. No existe workflow activo de despliegue.
@@ -91,3 +91,13 @@ Las notas de la checklist se guardan al pulsar **Guardar tarea**. No introduzcas
 ## Siguiente paso
 
 Aplica el código a tu carpeta y realiza la revisión visual de `docs/REVISION_MANUAL.md`. Después puedes seguir `docs/PUBLICAR_GITHUB_PAGES.md`. La plantilla de workflow está en `docs/deploy-pages.yml.example` y no se ejecuta mientras permanezca allí.
+
+## Ampliación didáctica
+
+El Aula práctica reúne seis lecciones por niveles, preguntas explicadas, cuatro ejercicios de evidencia, un plan orientativo según cinco respuestas y lecturas primarias comentadas. Accede desde portada, guía o el pie.
+
+Incluye dos materiales listos para descargar en public/materiales: PHP2Shell_Guia_Sencilla.md y PHP2Shell_Informe_Detallado.html. El informe HTML permite imprimir o guardar en PDF con Ctrl+P. Se regeneran automáticamente al compilar; npm run export:guides los actualiza por separado.
+
+El plan y la solicitud al responsable se descargan localmente. No envían mensajes, no revisan servidores y no completan tareas de auditoría.
+
+Detalles: docs/MEJORAS_APRENDIZAJE.md.

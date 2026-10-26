@@ -16,7 +16,7 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 | 14. Conclusiones y fuentes        | Páginas de conclusiones, bibliografía y fecha de revisión                                                                                     |
 | 15–17. Implementación y calidad   | Angular standalone, signals, servicios, carga de rutas, localStorage validado, exportaciones, foco y etiquetas                                |
 | 18. Publicación                   | Guía y workflow de ejemplo inactivo; hash y base relativa; sin despliegue                                                                     |
-| 19. Aceptación                    | 54 pruebas automatizadas; revisión visual expresamente pendiente                                                                              |
+| 19. Aceptación                    | 72 pruebas automatizadas; revisión visual expresamente pendiente                                                                              |
 | 20–22. Decisiones                 | Nombre PHP2SHELL; tema oscuro; sin sonido; JSON y HTML; tres casos; ninguna cuenta GitHub presupuesta                                         |
 
 ## Ajustes frente a la especificación original
@@ -31,6 +31,10 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 
 ## Validación realizada
 
-54 pruebas / 6 archivos de pruebas aprobadas con Vitest y Angular. Compilación de producción sin errores. Pruebas de todas las rutas y formularios en DOM de pruebas.
+72 pruebas / 9 archivos de pruebas aprobadas con Vitest y Angular. Compilación de producción sin errores. Pruebas de todas las rutas y formularios en DOM de pruebas.
 
 **Límite:** sin validación visual real de escritorio/móvil ni prueba pública de GitHub Pages. La publicación no se ha realizado.
+
+## Ampliación didáctica posterior
+
+Se añadió el Aula práctica con seis lecciones de dos niveles, pasos y ejemplos interpretados, un plan orientativo, cuatro ejercicios, dos materiales descargables y lecturas comentadas. Ver MEJORAS_APRENDIZAJE.md. La generación del plan no verifica ni modifica tareas de auditoría.

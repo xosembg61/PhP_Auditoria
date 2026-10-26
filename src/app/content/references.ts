@@ -72,6 +72,46 @@ export const REFERENCES = [
     url: 'https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages',
     supports: 'Publicación posterior de la aplicación estática.',
   },
+  {
+    id: 'ubuntu-oom',
+    org: 'Ubuntu Security · Canonical',
+    date: 'Consulta: 26 oct 2026',
+    title: 'Estado del paquete para CVE-2026-109618',
+    url: 'https://ubuntu.com/security/CVE-2026-109618',
+    supports: 'Ejemplo de backport por release y revisión exacta del proveedor.',
+  },
+  {
+    id: 'ubuntu-state',
+    org: 'Ubuntu Security · Canonical',
+    date: 'Consulta: 26 oct 2026',
+    title: 'Estado del paquete para CVE-2026-109619',
+    url: 'https://ubuntu.com/security/CVE-2026-109619',
+    supports: 'Contraste independiente de la corrección del segundo CVE en Ubuntu.',
+  },
+  {
+    id: 'cli-options',
+    org: 'PHP Manual',
+    date: 'Consulta: 26 oct 2026',
+    title: 'Opciones de consulta de PHP CLI',
+    url: 'https://www.php.net/manual/en/features.commandline.options.php',
+    supports: 'Alcance de php -v y php --ini, sin extrapolarlo al servicio web.',
+  },
+  {
+    id: 'laravel-logs',
+    org: 'Laravel',
+    date: 'Consulta: 26 oct 2026',
+    title: 'Canales y configuración de logging',
+    url: 'https://laravel.com/docs/logging',
+    supports: 'Las fuentes de registro de aplicación dependen de los canales configurados.',
+  },
+  {
+    id: 'owasp-logs',
+    org: 'OWASP Cheat Sheet Series',
+    date: 'Consulta: 26 oct 2026',
+    title: 'Logging: datos, correlación y protección',
+    url: 'https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html',
+    supports: 'Cobertura, correlación, datos sensibles a excluir e integridad de registros.',
+  },
 ] as const;
 export const refById = (id: string) => REFERENCES.find((s) => s.id === id);
 export const GLOSSARY = [

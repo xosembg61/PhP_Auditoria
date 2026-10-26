@@ -1,11 +1,12 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { TaskDefinition, TaskStatus, STATUSES } from '../content/audit';
 import { ProgressService } from '../core/progress';
 import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui';
 @Component({
   selector: 'app-audit-task',
-  imports: [FormsModule, InfoExpanderComponent, SourceRefsComponent, IconComponent],
+  imports: [FormsModule, RouterLink, InfoExpanderComponent, SourceRefsComponent, IconComponent],
   template: `<article class="audit-task" [class.task-verified]="current().status === 'verified'">
     <div class="task-heading">
       <span class="task-id mono">{{ task().id }}</span>
@@ -55,8 +56,12 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
           </p>
         </div>
       </div>
-      <app-source-refs [ids]="task().sources"
-    /></app-info-expander>
+      <app-source-refs [ids]="task().sources" /><a
+        class="text-link"
+        routerLink="/aula"
+        [queryParams]="{ lesson: lessonIndex() }"
+        >Ver explicación guiada de esta etapa <app-icon name="book" /></a
+    ></app-info-expander>
     <form (ngSubmit)="save()" class="task-form">
       <div class="two-grid">
         <div>
@@ -142,6 +147,9 @@ export class AuditTaskComponent {
       if (mode !== this.lastMode) this.saved.set(false);
       this.lastMode = mode;
     });
+  }
+  lessonIndex() {
+    return ({ A: 1, B: 2, C: 3, D: 4, E: 5 } as Record<string, number>)[this.task().section] ?? 0;
   }
   current() {
     return this.p.get(this.task().id);

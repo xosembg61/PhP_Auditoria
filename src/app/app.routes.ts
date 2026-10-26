@@ -56,6 +56,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/knowledge').then((m) => m.HelpPage),
   },
   {
+    path: 'aula',
+    title: 'Aula practica · PHP2Shell',
+    loadComponent: () => import('./pages/academy').then((m) => m.AcademyPage),
+  },
+  {
     path: '**',
     title: 'Página no encontrada · PHP2Shell',
     loadComponent: () => import('./pages/knowledge').then((m) => m.NotFoundPage),

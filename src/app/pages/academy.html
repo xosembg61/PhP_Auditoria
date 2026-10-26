@@ -1,0 +1,378 @@
+<div class="container page academy-page">
+  <app-page-header
+    eyebrow="Aula práctica"
+    title="Comprender mejor. Resolver con criterio."
+    description="Lecciones por niveles, recorridos guiados e informes para pasar de «sé que existe un fallo» a «sé qué comprobar y qué hacer después»."
+  />
+  <div class="academy-intro">
+    <span class="badge">APRENDE A TU RITMO</span>
+    <p>
+      Las explicaciones enlazan documentación primaria. Los ejercicios no revisan servidores ni
+      completan la checklist por ti.
+    </p>
+  </div>
+  <nav class="academy-tabs" aria-label="Secciones del aula">
+    @for (t of tabs; track t.id) {
+      <button
+        [class.active]="activeTab() === t.id"
+        [attr.aria-pressed]="activeTab() === t.id"
+        aria-controls="academy-content"
+        (click)="activeTab.set(t.id)"
+      >
+        <app-icon [name]="t.icon" />{{ t.label }}
+      </button>
+    }
+  </nav>
+  <div id="academy-content">
+    @if (activeTab() === 'lessons') {
+      <div class="academy-layout">
+        <nav class="lesson-menu" aria-label="Lecciones">
+          @for (l of lessons; track l.id; let i = $index) {
+            <button
+              [class.active]="lessonIndex() === i"
+              [attr.aria-pressed]="lessonIndex() === i"
+              (click)="chooseLesson(i)"
+            >
+              <span class="mono">0{{ i + 1 }}</span
+              ><span>{{ l.title }}</span>
+            </button>
+          }
+          <a class="text-link" routerLink="/guia"
+            >Volver a la ruta de aprendizaje <app-icon name="arrow"
+          /></a>
+        </nav>
+        <article class="panel lesson-reader">
+          <div class="lesson-meta">
+            <span class="eyebrow">LECCIÓN {{ lessonIndex() + 1 }} / 6</span>
+            <div class="segmented" aria-label="Nivel de explicación">
+              <button [attr.aria-pressed]="depth() === 'simple'" (click)="setDepth('simple')">
+                En sencillo</button
+              ><button
+                [attr.aria-pressed]="depth() === 'technical'"
+                (click)="setDepth('technical')"
+              >
+                Con detalle técnico
+              </button>
+            </div>
+          </div>
+          <h2>{{ lesson().title }}</h2>
+          <p class="lesson-goal"><strong>Al terminar sabrás:</strong> {{ lesson().goal }}</p>
+          <p class="lead">{{ lesson().short }}</p>
+          <div class="mental-model">
+            <span class="eyebrow">UN MODELO PARA ENTENDERLO</span>
+            <p>{{ lesson().analogy }}</p>
+            <small><strong>Límite de la comparación:</strong> {{ lesson().limit }}</small>
+          </div>
+          @if (depth() === 'technical') {
+            <section class="technical-depth">
+              <h3>Qué ocurre técnicamente</h3>
+              @for (p of lesson().technical; track p) {
+                <p>{{ p }}</p>
+              }
+            </section>
+          }
+          <h3 class="walkthrough-title">Cómo trabajar este paso</h3>
+          <ol class="lesson-walkthrough">
+            @for (s of lesson().steps; track s.title; let i = $index) {
+              <li>
+                <span class="walkthrough-number">{{ i + 1 }}</span>
+                <div>
+                  <h4>{{ s.title }}</h4>
+                  <p>{{ s.action }}</p>
+                  <dl>
+                    <dt>Qué buscar</dt>
+                    <dd>{{ s.lookFor }}</dd>
+                    <dt>Qué documentar</dt>
+                    <dd>{{ s.record }}</dd>
+                  </dl>
+                </div>
+              </li>
+            }
+          </ol>
+          <section class="worked-example">
+            <span class="badge">{{ lesson().example.label }}</span>
+            @if (lesson().example.command) {
+              <h4>Consulta local de lectura · con acceso autorizado</h4>
+              <pre><code>{{lesson().example.command}}</code></pre>
+            }
+            <pre><code>{{lesson().example.output}}</code></pre>
+            <div class="two-grid">
+              <div>
+                <h4>Qué significa</h4>
+                <p>{{ lesson().example.means }}</p>
+              </div>
+              <div>
+                <h4>Qué no demuestra</h4>
+                <p>{{ lesson().example.doesNot }}</p>
+              </div>
+            </div>
+          </section>
+          <app-info-expander title="Errores frecuentes y cómo corregirlos">
+            @for (m of lesson().mistakes; track m.claim) {
+              <h4>{{ m.claim }}</h4>
+              <p>{{ m.correction }}</p>
+            }
+          </app-info-expander>
+          <section class="understanding-check" aria-labelledby="lesson-question">
+            <span class="eyebrow">PAUSA PARA COMPRENDER</span>
+            <h3 id="lesson-question">{{ lesson().question.text }}</h3>
+            <div class="answer-options">
+              @for (o of lesson().question.options; track o.id) {
+                <button
+                  [attr.aria-pressed]="lessonAnswers()[lesson().id] === o.id"
+                  [class.selected]="lessonAnswers()[lesson().id] === o.id"
+                  (click)="answerLesson(o.id)"
+                >
+                  {{ o.text }}
+                </button>
+              }
+            </div>
+            @if (selectedOption(); as o) {
+              <div class="callout" aria-live="polite">
+                <strong>{{
+                  o.id === lesson().question.correct
+                    ? 'Razonamiento adecuado.'
+                    : 'Revisa el alcance del dato.'
+                }}</strong>
+                <p>{{ o.feedback }}</p>
+              </div>
+            }
+            <p class="field-help">
+              Esta comprobación es didáctica. No verifica tu sistema ni cambia los estados de
+              auditoría.
+            </p>
+          </section>
+          <app-source-refs [ids]="lesson().sources" />
+          <div class="lesson-bottom">
+            <a
+              class="button primary"
+              routerLink="/auditoria"
+              [queryParams]="{ section: lesson().section }"
+              >Aplicarlo en la checklist <app-icon name="arrow"
+            /></a>
+            <div class="button-row">
+              <button
+                class="button secondary"
+                [disabled]="lessonIndex() === 0"
+                (click)="chooseLesson(lessonIndex() - 1)"
+              >
+                Anterior</button
+              ><button
+                class="button secondary"
+                [disabled]="lessonIndex() === 5"
+                (click)="chooseLesson(lessonIndex() + 1)"
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    }
+    @if (activeTab() === 'plan') {
+      <div class="plan-intro panel">
+        <span class="eyebrow">ORIENTACIÓN SEGÚN TUS RESPUESTAS</span>
+        <h2>¿Qué debería hacer ahora?</h2>
+        <p>
+          Indica lo que sabes, incluido «no lo sé». El resultado ordena tareas para reducir la
+          incertidumbre. No diagnostica el servidor y no realiza cambios.
+        </p>
+      </div>
+      <div class="plan-layout">
+        <form class="panel plan-questions" (ngSubmit)="generatePlan()">
+          @for (q of questions; track q.key; let i = $index) {
+            <label [for]="'plan-' + q.key"
+              ><span class="mono">0{{ i + 1 }}</span> {{ q.label }}</label
+            ><select
+              [id]="'plan-' + q.key"
+              [name]="q.key"
+              [(ngModel)]="answers[q.key]"
+              (ngModelChange)="invalidatePlan()"
+            >
+              <option value="">Selecciona lo que sabes</option>
+              @for (o of q.options; track o.id) {
+                <option [value]="o.id">{{ o.label }}</option>
+              }
+            </select>
+          }
+          <button class="button primary full" type="submit" [disabled]="!validPlan()">
+            Generar plan orientativo <app-icon name="arrow" /></button
+          ><button class="text-button" type="button" (click)="downloadRequest()">
+            <app-icon name="download" /> Descargar solicitud al responsable
+          </button>
+          <p class="field-help">
+            La solicitud es una plantilla de texto. No se envía a nadie desde esta aplicación.
+          </p>
+        </form>
+        <section class="plan-results" aria-live="polite">
+          @if (plan().length) {
+            <div class="callout">
+              <strong>Plan propuesto a partir de lo que has indicado.</strong>
+              <p>
+                El orden es orientativo; el responsable debe adaptarlo al entorno. Ninguna tarea se
+                marca como realizada.
+              </p>
+              <button class="text-button" (click)="downloadPlan()">
+                <app-icon name="download" /> Descargar este plan (.md)
+              </button>
+            </div>
+            <ol class="action-plan">
+              @for (a of plan(); track a.id; let i = $index) {
+                <li class="panel">
+                  <div class="split">
+                    <span class="badge">{{ a.priority }}</span
+                    ><span class="mono">{{ i + 1 }}</span>
+                  </div>
+                  <h3>{{ a.title }}</h3>
+                  <p>{{ a.action }}</p>
+                  <h4>Evidencia para avanzar</h4>
+                  <p>{{ a.evidence }}</p>
+                  <h4>Qué evitar</h4>
+                  <p>{{ a.avoid }}</p>
+                  <a
+                    class="text-link"
+                    routerLink="/auditoria"
+                    [queryParams]="{ section: a.section }"
+                    >Documentar en la sección {{ a.section }} <app-icon name="arrow" /></a
+                  ><app-source-refs [ids]="a.sources" />
+                </li>
+              }
+            </ol>
+          } @else {
+            <div class="panel plan-empty">
+              <span class="empty-icon"><app-icon name="shield" /></span>
+              <h2>Empieza por lo que sabes.</h2>
+              <p>
+                No conocer la versión o no tener acceso son datos útiles para decidir el primer
+                paso. Indícalos en el formulario.
+              </p>
+              <p>
+                Si hay actividad no autorizada, el plan priorizará coordinar la respuesta y
+                preservar evidencias.
+              </p>
+            </div>
+          }
+        </section>
+      </div>
+    }
+    @if (activeTab() === 'evidence') {
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CUATRO EJERCICIOS RESUELTOS</span>
+          <h2>¿Qué permite concluir esta evidencia?</h2>
+        </div>
+        <span class="badge">TODOS LOS CASOS SON EDUCATIVOS</span>
+      </div>
+      <div class="two-grid evidence-drills">
+        @for (d of drills; track d.id; let i = $index) {
+          <article class="panel">
+            <span class="eyebrow">CASO 0{{ i + 1 }}</span>
+            <h3>{{ d.title }}</h3>
+            <blockquote>{{ d.evidence }}</blockquote>
+            <p>
+              <strong>{{ d.question }}</strong>
+            </p>
+            <div class="button-row">
+              <button
+                class="button secondary"
+                [attr.aria-pressed]="drillAnswers()[d.id] === 'sufficient'"
+                (click)="answerDrill(d.id, 'sufficient')"
+              >
+                Es suficiente</button
+              ><button
+                class="button secondary"
+                [attr.aria-pressed]="drillAnswers()[d.id] === 'insufficient'"
+                (click)="answerDrill(d.id, 'insufficient')"
+              >
+                Falta evidencia
+              </button>
+            </div>
+            @if (drillAnswers()[d.id]) {
+              <div class="callout" aria-live="polite">
+                <strong>{{
+                  drillAnswers()[d.id] === d.answer
+                    ? 'Interpretación adecuada.'
+                    : 'Revisa el salto de la evidencia a la conclusión.'
+                }}</strong>
+                <p>{{ d.feedback }}</p>
+                <a class="text-link" routerLink="/auditoria" [queryParams]="{ section: d.section }"
+                  >{{ d.next }} <app-icon name="arrow"
+                /></a>
+              </div>
+            }
+          </article>
+        }
+      </div>
+      <div class="callout">
+        <strong>Para tu propio informe</strong>
+        <p>
+          Escribe «fuente + fecha + alcance + dato + límite + siguiente acción». Si falta una parte
+          que afecta a la conclusión, deja visible el pendiente.
+        </p>
+      </div>
+      <a class="button primary" routerLink="/laboratorio"
+        >Practicar con registros simulados <app-icon name="arrow"
+      /></a>
+    }
+    @if (activeTab() === 'resources') {
+      <section class="report-downloads two-grid">
+        <article class="panel">
+          <span class="eyebrow">PRIMERA LECTURA</span>
+          <h2>Guía sencilla</h2>
+          <p>
+            La idea principal, seis lecciones resumidas, lo que debes anotar y los errores que
+            conviene evitar. Útil para estudiar y preparar una explicación.
+          </p>
+          <a class="button primary" href="materiales/PHP2Shell_Guia_Sencilla.md" download
+            ><app-icon name="download" /> Descargar guía (.md)</a
+          >
+        </article>
+        <article class="panel">
+          <span class="eyebrow">CONSULTA Y RESOLUCIÓN</span>
+          <h2>Informe detallado</h2>
+          <p>
+            Desarrollo técnico, pasos guiados, ejemplos interpretados, las 18 evidencias esperadas,
+            ejercicios resueltos y bibliografía.
+          </p>
+          <a class="button secondary" href="materiales/PHP2Shell_Informe_Detallado.html" download
+            ><app-icon name="download" /> Descargar informe (.html)</a
+          >
+          <p class="field-help">Ábrelo y pulsa Ctrl+P para imprimir o guardar como PDF.</p>
+        </article>
+      </section>
+      <div class="callout">
+        <strong>Cómo usar las lecturas</strong>
+        <p>
+          Empieza por una lección, abre la fuente que respalda el dato y vuelve a la checklist para
+          documentarlo. Los informes son material propio basado en fuentes primarias; no sustituyen
+          los avisos del proveedor de tu servidor.
+        </p>
+      </div>
+      <div class="section-heading section-space">
+        <div>
+          <span class="eyebrow">DOCUMENTACIÓN PRIMARIA SELECCIONADA</span>
+          <h2>Lee con una pregunta concreta.</h2>
+        </div>
+      </div>
+      <div class="resource-grid">
+        @for (r of resourceCards; track r.id) {
+          @if (source(r.id); as s) {
+            <article class="panel">
+              <span class="badge">{{ r.level }}</span>
+              <h3>{{ r.label }}</h3>
+              <p>{{ r.how }}</p>
+              <small>{{ s.org }} · {{ s.date }}</small
+              ><a class="text-link" [href]="s.url" target="_blank" rel="noopener noreferrer"
+                >Abrir fuente <app-icon name="external"
+              /></a>
+            </article>
+          }
+        }
+      </div>
+      <p class="field-help">
+        Fuentes revisadas el 26 de octubre de 2026. Comprueba de nuevo los avisos antes de realizar
+        una actuación real.
+      </p>
+    }
+  </div>
+</div>

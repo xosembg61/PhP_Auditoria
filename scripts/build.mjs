@@ -10,6 +10,13 @@ for (const entry of readdirSync(output, { withFileTypes: true })) {
   if (entry.isFile() && /^(?:chunk-|main-|styles-).+\.(?:js|css)(?:\.map)?$/.test(entry.name))
     unlinkSync(join(output, entry.name));
 }
+const guideExport = spawnSync(
+  process.execPath,
+  [join(root, 'scripts', 'export-study-guides.mjs')],
+  { cwd: root, stdio: 'inherit' },
+);
+if (guideExport.error) throw guideExport.error;
+if (guideExport.status !== 0) process.exit(guideExport.status ?? 1);
 const result = spawnSync(
   process.execPath,
   [

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AuditTaskComponent } from './audit-task';
 import { TASKS } from '../content/audit';
 import { ProgressService } from '../core/progress';
@@ -7,6 +8,7 @@ describe('edición de tareas', () => {
   it('conserva un borrador al guardar otra tarea', async () => {
     localStorage.clear();
     TestBed.resetTestingModule();
+    TestBed.configureTestingModule({ providers: [provideRouter([])] });
     const f = TestBed.createComponent(AuditTaskComponent);
     f.componentRef.setInput('task', TASKS[0]);
     await f.whenStable();

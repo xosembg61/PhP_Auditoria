@@ -11,6 +11,16 @@ import { PageHeaderComponent, IconComponent, InfoExpanderComponent } from '../sh
       title="Aprende a revisar. Paso a paso."
       description="Seis capítulos para comprender, verificar e investigar. El progreso de lectura y el de comprobaciones son distintos."
     />
+    <div class="academy-bridge">
+      <div>
+        <span class="eyebrow">NUEVO · AULA PRÁCTICA</span>
+        <h2>Si un paso no está claro, empieza por su explicación.</h2>
+        <p>Ejemplos interpretados, informes e itinerario de resolución según tu entorno.</p>
+      </div>
+      <a class="button primary" routerLink="/aula" [queryParams]="{ lesson: active() }"
+        >Abrir lección {{ active() + 1 }} <app-icon name="arrow"
+      /></a>
+    </div>
     <div class="guide-intro panel">
       <div>
         <span class="eyebrow">ELIGE CÓMO RECORRER LA GUÍA</span>
