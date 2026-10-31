@@ -9,7 +9,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $destinationRoot 'angular.json'))) {
 if (-not (Test-Path -LiteralPath (Join-Path $sourceRoot 'src/app/pages/home.ts'))) { throw 'No se encuentran los archivos de PHP2Shell junto al script.' }
 $backupRoot = Join-Path $destinationRoot ('.php2shell-backups/' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 [System.IO.Directory]::CreateDirectory($backupRoot) | Out-Null
-$items = @('src','public','scripts','docs','package.json','package-lock.json','angular.json','tsconfig.json','tsconfig.app.json','tsconfig.spec.json','README.md','.gitignore')
+$items = @('src','public','scripts','docs','dist','ABRIR_WEB.cmd','LEEME_PRIMERO.txt','package.json','package-lock.json','angular.json','tsconfig.json','tsconfig.app.json','tsconfig.spec.json','README.md','.gitignore')
 foreach ($item in $items) {
   $existing = Join-Path $destinationRoot $item
   if (Test-Path -LiteralPath $existing) { Copy-Item -LiteralPath $existing -Destination (Join-Path $backupRoot $item) -Recurse -Force }

@@ -1,171 +1,254 @@
-<div class="container page">
+<div class="container page audit-wizard-page">
   <app-page-header
-    eyebrow="Auditoría"
-    title="Checklist de auditoría para Twinteach"
-    description="18 comprobaciones, cinco etapas y una regla: cada conclusión necesita evidencia. Esta web no ha revisado los sistemas reales de Twinteach."
+    eyebrow="Auditoría guiada"
+    title="Una comprobación. Una evidencia. Un paso más."
+    description="Revisa el caso Twinteach con 18 comprobaciones repartidas en cinco etapas. Al final tendrás un resumen de lo documentado y de lo que falta."
   />
-  <figure class="audit-photo-band">
-    <img
-      src="assets/images/servidores-nersc.jpg"
-      alt="Frontal de varios racks de servidores en NERSC"
-      width="1280"
-      height="850"
-      loading="lazy"
-    />
-    <figcaption>
-      <strong>Un servidor no representa todo el inventario.</strong>
-      <p>Relaciona servicios, procesos y paquetes antes de concluir.</p>
-      <small>Foto real de contexto · NERSC, 2011 · Derrick Coetzee / CC0. No es Twinteach.</small>
-    </figcaption>
-  </figure>
-  <div class="audit-toolbar">
+  <div class="audit-topline">
     <div class="segmented" aria-label="Modo de trabajo">
-      <button [attr.aria-pressed]="p.mode() === 'demo'" (click)="changeMode('demo')">
-        DEMO · Datos ficticios</button
-      ><button [attr.aria-pressed]="p.mode() === 'template'" (click)="changeMode('template')">
-        PLANTILLA · Revisión autorizada
+      <button type="button" [attr.aria-pressed]="p.mode() === 'demo'" (click)="changeMode('demo')">
+        DEMO · Practicar</button
+      ><button
+        type="button"
+        [attr.aria-pressed]="p.mode() === 'template'"
+        (click)="changeMode('template')"
+      >
+        PLANTILLA · Mi revisión
       </button>
     </div>
-    <a class="text-link" routerLink="/ayuda"
-      >¿Qué cuenta como evidencia? <app-icon name="info"
-    /></a>
-  </div>
-  <div class="callout warning compact">
-    <strong>{{
-      p.mode() === 'demo' ? 'DEMO / DATOS SIMULADOS' : 'PLANTILLA / NOTAS DEL VISITANTE'
-    }}</strong>
-    <p>
-      {{
-        p.mode() === 'demo'
-          ? 'Los ejemplos son ficticios y no pertenecen a Twinteach.'
-          : 'Las tareas parten sin verificar. Solo documenta una revisión con acceso autorizado.'
-      }}
-      Marcar tareas no demuestra por sí solo que el sistema esté protegido.
-    </p>
+    <span class="audit-mode-note">{{
+      p.mode() === 'demo'
+        ? 'Ejemplos ficticios; no pertenecen a Twinteach.'
+        : 'Notas de tu revisión autorizada; la web no las verifica.'
+    }}</span>
   </div>
   @if (p.storage.warning()) {
     <p class="callout warning" role="status">{{ p.storage.warning() }}</p>
   }
-  <div class="audit-layout">
-    <div>
-      <div class="section-tabs" role="group" aria-label="Secciones de la checklist">
-        @for (s of sections; track s.id) {
-          <button
-            [class.active]="active() === s.id"
-            (click)="active.set(s.id)"
-            [attr.aria-pressed]="active() === s.id"
-          >
-            <span class="section-letter">{{ s.id }}</span
-            ><span
-              ><strong>{{ s.title }}</strong
-              ><small
-                >{{ p.section(s.id).done }} de {{ p.section(s.id).total }} documentadas</small
-              ></span
-            >
-            @if (p.section(s.id).complete) {
-              <app-icon name="check" />
-            }
-          </button>
-        }
-      </div>
-      <div class="section-heading audit-section-heading">
-        <div>
-          <span class="eyebrow">ETAPA {{ active() }} / 5</span>
-          <h2>{{ currentSection().title }}</h2>
-          <p>{{ currentSection().description }}</p>
-        </div>
-      </div>
-      @for (t of sectionTasks(); track t.id) {
-        <app-audit-task [task]="t" />
-      }
-      <div class="button-row">
-        <button class="button secondary" [disabled]="active() === 'A'" (click)="navigate(-1)">
-          Anterior etapa</button
-        ><button class="button primary" [disabled]="active() === 'E'" (click)="navigate(1)">
-          Siguiente etapa <app-icon name="arrow" />
-        </button>
-      </div>
-    </div>
-    <aside class="audit-sidebar">
-      <section class="panel progress-panel">
-        <span class="eyebrow">PROGRESO DOCUMENTADO</span
-        ><app-progress-ring [done]="p.count()" [total]="tasks.length" />
-        <h2>{{ p.count() }} de 18 tareas</h2>
-        <p>Actividad documentada, no porcentaje de seguridad.</p>
-        <div class="status-breakdown">
-          @for (s of statuses; track s.id) {
-            <div>
-              <span><i [class]="'status-marker ' + s.id"></i>{{ s.label }}</span
-              ><strong>{{ statusCount(s.id) }}</strong>
-            </div>
-          }
-        </div>
-        <span class="badge">{{ p.mode() === 'demo' ? 'DEMO' : 'PLANTILLA' }}</span>
-      </section>
-      <section class="panel">
-        <div class="panel-heading">
-          <app-icon name="trophy" />
-          <h2>Mis logros</h2>
-        </div>
-        <div class="achievements-list">
-          @for (s of sections; track s.id) {
-            <div [class.unlocked]="p.section(s.id).complete">
-              <app-icon [name]="p.section(s.id).complete ? 'trophy' : 'lock'" />
-              <div>
-                <strong>{{ s.achievement }}</strong
-                ><small>{{
-                  p.section(s.id).complete
-                    ? 'Desbloqueado'
-                    : p.state().unlocks[s.id]
-                      ? 'Etapa reabierta'
-                      : 'Pendiente'
-                }}</small>
-                @if (p.state().unlocks[s.id]) {
-                  <small
-                    >{{ p.state().unlocks[s.id].slice(0, 10) }} ·
-                    {{ p.mode() === 'demo' ? 'Aprendizaje' : 'Documentación' }}</small
-                  >
-                }
-                @if (p.section(s.id).complete) {
-                  <button class="text-button" (click)="p.replay(s.id, s.achievement, s.message)">
-                    Ver logro / reproducir
-                  </button>
-                }
-              </div>
-            </div>
-          }
-        </div>
-      </section>
-      <section class="panel">
-        <h2>Conserva tu informe</h2>
+  @if (!results()) {
+    <section class="audit-problem-strip">
+      <span class="audit-problem-icon"><app-icon name="shield" /></span>
+      <div>
+        <h2 id="audit-problem">¿Qué problema estamos revisando?</h2>
         <p>
-          Revisa las notas antes de compartir. Las descargas incluyen estados, fechas, límites y
-          fuentes.
+          PHP2Shell afecta al programa que ejecuta PHP en el servidor. Buscamos saber si el
+          <strong>PHP real del servicio contiene la corrección</strong> y, por separado, si hay
+          <strong>evidencia de actividad no autorizada</strong>. Solo conocemos Angular y Laravel
+          por el enunciado.
         </p>
-        <button class="button primary full" (click)="p.exportJson()">
-          <app-icon name="download" /> Exportar JSON</button
-        ><button class="button secondary full" (click)="p.exportHtml()">
-          <app-icon name="file" /> Informe imprimible
+      </div>
+      <a class="text-link" routerLink="/incidente">Entenderlo primero <app-icon name="arrow" /></a>
+    </section>
+    <div class="audit-wizard-shell">
+      <aside class="wizard-map">
+        <span class="eyebrow">EL RECORRIDO</span>
+        <nav aria-label="Etapas de la auditoría">
+          @for (s of sections; track s.id; let i = $index) {
+            <button
+              type="button"
+              [class.active]="section().id === s.id"
+              [attr.aria-pressed]="section().id === s.id"
+              (click)="chooseSection(s.id)"
+            >
+              <span class="wizard-stage-number" [class.done]="p.section(s.id).complete">{{
+                p.section(s.id).complete ? '✓' : '0' + (i + 1)
+              }}</span
+              ><span
+                ><strong>{{ s.title }}</strong
+                ><small
+                  >{{ p.section(s.id).done }} / {{ p.section(s.id).total }} resueltas</small
+                ></span
+              >
+            </button>
+          }
+        </nav>
+        <div class="wizard-map-note">
+          <app-icon name="info" />
+          <p>
+            ¿Falta acceso? Puedes registrar un bloqueo. Si decides dejar una tarea pendiente,
+            aparecerá así en el resultado.
+          </p>
+        </div>
+        <button type="button" class="text-link" (click)="showResults()">
+          Ver mi resumen actual <app-icon name="file" />
         </button>
-        <p class="field-help">
-          Abre el HTML descargado y usa Ctrl+P para imprimir o guardar en PDF.
+      </aside>
+      <section class="wizard-workspace" aria-label="Comprobación actual">
+        <div class="wizard-step-top" id="audit-step-heading" tabindex="-1">
+          <span class="badge">ETAPA {{ section().id }} · {{ section().title }}</span
+          ><strong>Comprobación {{ sectionPosition() }} de {{ sectionTasks().length }}</strong>
+        </div>
+        <div
+          class="wizard-track"
+          role="progressbar"
+          aria-label="Posición en el recorrido, no porcentaje de seguridad"
+          aria-valuemin="1"
+          [attr.aria-valuemax]="tasks.length"
+          [attr.aria-valuenow]="index() + 1"
+        >
+          <span [style.width.%]="((index() + 1) / tasks.length) * 100"></span>
+        </div>
+        <div class="wizard-stage-intro">
+          <h2>{{ walkthrough().question }}</h2>
+          <p>{{ walkthrough().idea }}</p>
+          <details>
+            <summary>Ver el método de esta etapa y un ejemplo</summary>
+            <ol class="plain-steps">
+              @for (step of walkthrough().steps; track step) {
+                <li>{{ step }}</li>
+              }
+            </ol>
+            <div class="worked-note">{{ walkthrough().example }}</div>
+            <p>{{ walkthrough().limit }}</p>
+            <p><strong>Al terminar:</strong> {{ walkthrough().next }}</p>
+          </details>
+        </div>
+        @for (t of [task()]; track t.id) {
+          <app-audit-task
+            [task]="t"
+            [wizard]="true"
+            [draft]="draft()"
+            (taskSaved)="saved($event)"
+          />
+        }
+        <div class="wizard-controls">
+          <button
+            type="button"
+            class="text-button"
+            [disabled]="index() === 0"
+            (click)="go(index() - 1)"
+          >
+            ← Anterior</button
+          ><span>{{ index() + 1 }} / {{ tasks.length }} del recorrido</span
+          ><button type="button" class="text-button" (click)="leavePending()">
+            Dejar para después →
+          </button>
+        </div>
+        <p class="wizard-save-note">
+          «Guardar y continuar» registra la tarea antes de avanzar. Los borradores se conservan al
+          cambiar de paso durante esta visita; guarda antes de cerrar.
         </p>
       </section>
-      <section class="panel">
-        <h2>Reiniciar este modo</h2>
-        <p>El progreso del otro modo se conserva.</p>
+    </div>
+  } @else {
+    <section class="audit-results" aria-labelledby="audit-results-title">
+      <div class="results-hero">
+        <span class="results-icon"><app-icon name="file" /></span>
+        <div>
+          <span class="eyebrow"
+            >TU RESULTADO ·
+            {{ p.mode() === 'demo' ? 'PRÁCTICA FICTICIA' : 'DOCUMENTACIÓN DEL VISITANTE' }}</span
+          >
+          <h2 id="audit-results-title" tabindex="-1">{{ summary().title }}</h2>
+          <p>{{ summary().next }}</p>
+          <small
+            >Este resultado resume tus notas. No certifica la seguridad de Twinteach ni confirma por
+            sí solo un ataque.</small
+          >
+        </div>
+      </div>
+      <div class="result-stats">
+        <article class="result-verified">
+          <strong>{{ summary().verified }}</strong
+          ><span>Comprobadas con evidencia</span>
+        </article>
+        <article>
+          <strong>{{ summary().notApplicable }}</strong
+          ><span>No aplican, justificadas</span>
+        </article>
+        <article class="result-blocked">
+          <strong>{{ summary().blocked }}</strong
+          ><span>Bloqueadas</span>
+        </article>
+        <article class="result-pending">
+          <strong>{{ summary().pending }}</strong
+          ><span>Pendientes o en revisión</span>
+        </article>
+      </div>
+      <div class="results-layout">
+        <section class="panel">
+          <h3>Así queda cada etapa</h3>
+          <div class="results-stages">
+            @for (s of summary().sections; track s.id) {
+              <button type="button" (click)="chooseSection(s.id)">
+                <span class="section-letter">{{ s.id }}</span
+                ><span
+                  ><strong>{{ s.title }}</strong
+                  ><small
+                    >{{ s.verified }} con evidencia · {{ s.open }} por resolver · {{ s.total }} en
+                    total</small
+                  ></span
+                ><app-icon name="arrow" />
+              </button>
+            }
+          </div>
+        </section>
+        <section class="panel results-export">
+          <span class="eyebrow">CONSERVA LA REVISIÓN</span>
+          <h3>Tu informe, listo para revisar.</h3>
+          <p>
+            Incluye los estados, notas, evidencias y límites. Revisa el contenido antes de
+            compartirlo.
+          </p>
+          <button type="button" class="button primary full" (click)="p.exportHtml()">
+            <app-icon name="file" />Descargar informe imprimible</button
+          ><button type="button" class="button secondary full" (click)="p.exportJson()">
+            <app-icon name="download" />Exportar datos JSON
+          </button>
+          <p class="field-help">Abre el HTML y usa Ctrl + P para imprimir o guardar en PDF.</p>
+          <a class="text-link" routerLink="/conclusiones"
+            >Interpretar mi conclusión <app-icon name="arrow"
+          /></a>
+        </section>
+      </div>
+      @if (summary().followups.length) {
+        <details class="panel results-followups">
+          <summary>Qué sigue pendiente · {{ summary().followups.length }} comprobaciones</summary>
+          <p>
+            Retoma la tarea concreta, conserva el motivo del bloqueo y acuerda el siguiente dato que
+            necesitas.
+          </p>
+          <div>
+            @for (t of summary().followups; track t.id) {
+              <button type="button" (click)="revisit(t.id)">
+                <span class="mono">{{ t.id }}</span
+                ><span
+                  >{{ t.title }}<small>{{ statusLabel(t.progress.status) }}</small></span
+                ><app-icon name="arrow" />
+              </button>
+            }
+          </div>
+        </details>
+      }
+      <details class="results-achievements panel">
+        <summary>Logros y progreso de esta revisión</summary>
+        <p>
+          {{ p.count() }} de {{ tasks.length }} tareas resueltas con evidencia o justificación de no
+          aplicación.
+        </p>
+        @for (s of sections; track s.id) {
+          <p>
+            <app-icon [name]="p.section(s.id).complete ? 'trophy' : 'lock'" /> {{ s.achievement }} ·
+            {{ p.section(s.id).complete ? 'Desbloqueado' : 'Pendiente' }}
+          </p>
+        }
+      </details>
+      <div class="results-bottom">
+        <button type="button" class="button secondary" (click)="go(0)">
+          Revisar desde el principio
+        </button>
         @if (!confirmReset()) {
-          <button class="text-button critical-text" (click)="confirmReset.set(true)">
+          <button type="button" class="text-button critical-text" (click)="confirmReset.set(true)">
             Reiniciar {{ p.mode() === 'demo' ? 'demo' : 'plantilla' }}
           </button>
         } @else {
-          <p>¿Borrar tareas y logros de este modo?</p>
-          <div class="button-row">
-            <button class="button danger" (click)="reset()">Sí, borrar</button
-            ><button class="button secondary" (click)="confirmReset.set(false)">Cancelar</button>
-          </div>
+          <span>¿Borrar los datos de este modo?</span
+          ><button type="button" class="button danger" (click)="reset()">Sí, reiniciar</button
+          ><button type="button" class="text-button" (click)="confirmReset.set(false)">
+            Cancelar
+          </button>
         }
-      </section>
-    </aside>
-  </div>
+      </div>
+    </section>
+  }
 </div>

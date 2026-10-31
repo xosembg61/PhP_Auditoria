@@ -3,21 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PATCHES } from '../content/incident';
 import { checkVersion, VersionResult } from '../core/version-checker';
-import {
-  PageHeaderComponent,
-  IconComponent,
-  InfoExpanderComponent,
-  SourceRefsComponent,
-} from '../shared/ui';
+import { PageHeaderComponent, IconComponent, InfoExpanderComponent } from '../shared/ui';
 @Component({
-  imports: [
-    FormsModule,
-    RouterLink,
-    PageHeaderComponent,
-    IconComponent,
-    InfoExpanderComponent,
-    SourceRefsComponent,
-  ],
+  imports: [FormsModule, RouterLink, PageHeaderComponent, IconComponent, InfoExpanderComponent],
   template: `<div class="container page">
     <app-page-header
       eyebrow="Versiones"
@@ -135,7 +123,6 @@ import {
         mantener la función, según el aviso. El responsable debe comprobar si aplica y renovar los
         procesos pertinentes.
       </p>
-      <app-source-refs [ids]="['php']" />
     </div>
     <section class="section-space">
       <div class="section-heading">
@@ -172,7 +159,6 @@ import {
           </tbody>
         </table>
       </div>
-      <app-source-refs [ids]="['php', 'oom', 'state']" />
     </section>
     <div class="two-grid section-space">
       <app-info-expander title="¿Qué es un backport?"

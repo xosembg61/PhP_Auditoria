@@ -52,10 +52,6 @@ describe('aula práctica', () => {
     await h.fixture.whenStable();
     const root = h.routeNativeElement!;
     expect(root.querySelectorAll('.report-downloads a[download]')).toHaveLength(2);
-    expect(
-      [...root.querySelectorAll('.resource-grid a')].every(
-        (a) => a.getAttribute('rel') === 'noopener noreferrer',
-      ),
-    ).toBe(true);
+    expect(root.querySelectorAll('.aula-video-resources app-learning-video')).toHaveLength(2);
   });
 });

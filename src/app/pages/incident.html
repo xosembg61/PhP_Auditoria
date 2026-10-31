@@ -70,7 +70,7 @@
       </p>
     </article>
   </div>
-  <app-source-refs [ids]="['php', 'oom', 'state']" />
+
   <section class="section-space">
     <h2 id="inc-basics" tabindex="-1">Antes de empezar: cuatro palabras útiles.</h2>
     <div class="incident-terms">
@@ -133,7 +133,6 @@
         <strong>Qué debes entender</strong>
         <p>{{ flow().lesson }}</p>
       </div>
-      <app-source-refs [ids]="flow().sources" />
     </div>
     <div class="callout warning">
       <strong>Fallo técnico, exposición y ataque no son lo mismo.</strong>
@@ -177,7 +176,6 @@
       aplicación. <strong>No significa que todos los sitios hayan sido comprometidos.</strong> CVSS
       9,2 expresa gravedad técnica, no una probabilidad del 92 %.
     </p>
-    <app-source-refs [ids]="['oom', 'state']" />
   </section>
   <section class="section-space">
     <span class="eyebrow">INVESTIGACIÓN, NO UN ÚNICO MOMENTO</span>
@@ -194,7 +192,6 @@
           Una nueva auditoría comenzó el 30 de julio de 2026. El 11 de agosto, un investigador de
           Calif comunicó una vía de RCE; otras aportaciones coordinadas ampliaron la investigación.
         </p>
-        <app-source-refs [ids]="['foundation']" />
       </article>
       <article class="panel">
         <h3>Observar, divulgar y corregir son hitos distintos.</h3>
@@ -206,7 +203,6 @@
           Los avisos y parches iniciales llegaron el 21 de octubre. PHP añadió un seguimiento de
           sesiones el día 23; por eso el número de versión no debe leerse como una garantía global.
         </p>
-        <app-source-refs [ids]="['aws', 'php']" />
       </article>
     </div>
     <div class="button-row">
@@ -320,8 +316,7 @@
       @for (f of faqs; track f.q) {
         <app-info-expander [title]="f.q"
           ><p>{{ f.a }}</p>
-          <app-source-refs [ids]="f.sources"
-        /></app-info-expander>
+        </app-info-expander>
       }
     </div>
   </section>

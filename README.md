@@ -5,9 +5,9 @@ Aplicación **Angular 22 real**, TypeScript y CSS, creada siguiendo la especific
 ## Estado de entrega
 
 - Código terminado y compilación de producción comprobada.
-- **79 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
+- **95 pruebas automáticas aprobadas**: comparación de versiones, reglas de evidencia, logros, persistencia, aislamiento de modos, casos del laboratorio, formularios y todas las rutas.
 - Revisión editorial con fuentes primarias el **26 de octubre de 2026**.
-- Revisión visual real: portada e incidente a 390 px, guía a 900 px, laboratorio a 320 px y portada, incidente y auditoría a 1440 px. Reproducción del vídeo de Wiz comprobada. La lista manual conserva otras comprobaciones pendientes.
+- Revisión actual: escritorio, portada/Explorar a 320 px, auditoría y resultados a 390 px y guía continua a 900 px. Alcance y límites de reproducción en docs/RETOQUES_NAVEGACION_AUDITORIA.md.
 - Sin commit, push ni publicación. No existe workflow activo de despliegue.
 - El proyecto original indicado por el propietario no se ha modificado, porque estaba fuera de las rutas de escritura del entorno.
 
@@ -29,7 +29,13 @@ pwsh -NoProfile -File .\Importar_En_Proyecto.ps1 -Destination "C:\Users\Miguel\D
 
 Si estás en clase, cambia únicamente el valor de `-Destination` por la ruta real. Para aplicar los cambios, cierra antes el servidor de desarrollo del proyecto de destino.
 
-## Iniciar en local
+## Abrir la web en Windows con doble clic
+
+El ZIP se debe **extraer**, no instalar. Haz clic derecho en el archivo, elige **Extraer todo**, entra en `PhP_Auditoria` y abre **ABRIR_WEB.cmd**. Se sirve la web compilada y se abre el navegador. Mantén la ventana del servidor abierta; Ctrl+C lo detiene.
+
+Esta vista requiere Node.js disponible en PATH, sin instalar dependencias de Angular, PowerShell 7 ni permisos de administrador. Si el puerto 4201 está ocupado, se elige uno libre. El archivo `LEEME_PRIMERO.txt` explica los errores habituales.
+
+## Iniciar en local para desarrollar
 
 Dentro de la carpeta del proyecto:
 
@@ -55,7 +61,10 @@ El script de pruebas usa una carpeta temporal dentro del proyecto para evitar re
 ## Funciones
 
 - Portada con acceso a los cuatro módulos principales.
-- Tema claro con fotografías reales, colores alegres y recursos audiovisuales repartidos según el contexto.
+- Tema claro y oscuro con fotografías reales y recursos audiovisuales repartidos según el contexto. Botón de sol/luna, preferencia guardada y modo automático en Ayuda.
+- Búsqueda local de páginas, lecciones y glosario (Ctrl/Cmd + K), indicador de página recorrida y regreso al inicio.
+- Auditoría por pasos: una tarea cada vez, guardado antes del avance y resultados finales con pendientes y evidencias. Mantiene las 18 tareas y sus reglas.
+- Guía continua: seis capítulos visibles a la vez, índice acompañante y siguiente paso junto al contenido.
 - Incidente ampliado: glosario inicial, analogía, tres esquemas de memoria, descubrimiento, consecuencias, preguntas frecuentes y pasos por perfil.
 - Incidente y alcance transversal: frameworks, CMS, tiendas, código propio y procesos auxiliares.
 - Cronología interactiva, dos CVE y explicaciones sencilla/técnica.
@@ -103,3 +112,11 @@ Incluye dos materiales listos para descargar en public/materiales: PHP2Shell_Gui
 El plan y la solicitud al responsable se descargan localmente. No envían mensajes, no revisan servidores y no completan tareas de auditoría.
 
 Detalles: docs/MEJORAS_APRENDIZAJE.md. Créditos, licencias y distribución multimedia: docs/RECURSOS_VISUALES.md.
+
+## Actualización de interfaz y explicaciones · 28/10/2026
+
+Componentes de Uiverse adaptados a Angular con teclado, foco y movimiento reducido. Licencias completas en docs/LICENCIAS_UIVERSE.txt. Detalles y comprobaciones: docs/ACTUALIZACION_TEMA_Y_GUIA.md. Se conservan las fuentes técnicas revisadas el 26/10; esta actualización no afirma haber realizado una nueva auditoría de los avisos ni de Twinteach.
+
+## Retoques finales de navegación y recorrido
+
+Cabecera Inicio / Incidente / Versiones / Explorar, búsqueda conservada, modo claro mate, fotografía real en el fondo y tarjetas adaptadas de Uiverse. La biblioteca de vídeos contiene siete recursos distintos de seis creadores/editoriales, cada uno insertado una vez y con reproductor ancho. Las referencias se reúnen en Fuentes. Ver docs/RETOQUES_NAVEGACION_AUDITORIA.md.

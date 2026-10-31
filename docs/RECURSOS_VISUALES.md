@@ -38,4 +38,8 @@ Los diagramas de memoria y arquitectura son esquemas didácticos hechos con HTML
 
 ## Comprobaciones de esta entrega
 
-79 pruebas automatizadas aprobadas en 11 archivos; compilación de producción correcta. Revisión visual representativa en móvil, tablet y escritorio. La entrevista de Wiz se ha reproducido dentro del incidente; los otros reproductores se validan por su configuración y fuente, sin afirmar que se hayan reproducido todos.
+89 pruebas automatizadas aprobadas en 14 archivos; compilación de producción correcta. Revisión visual representativa en móvil, tablet y escritorio. La entrevista de Wiz se ha reproducido dentro del incidente; los otros reproductores se validan por su configuración y fuente, sin afirmar que se hayan reproducido todos.
+
+Actualización 28/10: consultar ACTUALIZACION_TEMA_Y_GUIA.md para los dos temas, búsqueda y nuevas explicaciones. La revisión visual actual es de escritorio; quedan pendientes los tamaños de móvil y tablet para los controles nuevos.
+
+La versión vigente cambia a lectura continua y auditoría por pasos. La revisión responsive y multimedia de esta entrega está documentada en RETOQUES_NAVEGACION_AUDITORIA.md; las listas anteriores se conservan como registro de versiones previas.

@@ -8,52 +8,95 @@
         ><small>INVESTIGACIÓN · APRENDIZAJE · AUDITORÍA</small></span
       ></a
     >
-    <button
-      class="menu-toggle ghost"
-      (click)="menuOpen.set(!menuOpen())"
-      [attr.aria-expanded]="menuOpen()"
-      aria-controls="main-nav"
-    >
-      <app-icon name="menu" /> Menú
-    </button>
-    <nav id="main-nav" aria-label="Navegación principal" [class.open]="menuOpen()">
+    <nav id="main-nav" aria-label="Navegación principal">
       @for (link of links; track link.path) {
         <a
           [routerLink]="link.path"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-          (click)="menuOpen.set(false)"
           >{{ link.label }}</a
         >
       }
+      <button
+        class="explore-trigger"
+        type="button"
+        popovertarget="explore-panel"
+        aria-haspopup="dialog"
+        [attr.aria-expanded]="exploreOpen()"
+        aria-controls="explore-panel"
+      >
+        <span class="explore-grid-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span
+        >Explorar<span class="explore-chevron" aria-hidden="true">⌄</span>
+      </button>
     </nav>
-    <a class="alert-pill" routerLink="/vulnerabilidades"
-      ><span class="status-dot"></span> Alerta crítica <span class="mono">9,2</span></a
-    >
+    <div class="header-tools">
+      <app-content-search />
+      <app-theme-toggle />
+    </div>
+  </div>
+  <div
+    id="explore-panel"
+    popover="auto"
+    role="dialog"
+    aria-label="Explorar contenidos"
+    class="explore-popover"
+    (toggle)="onExploreToggle($event)"
+  >
+    <div class="explore-heading">
+      <div>
+        <span class="eyebrow">ELIGE TU CAMINO</span>
+        <p>Todo el contenido, a un paso.</p>
+      </div>
+      <button
+        type="button"
+        class="search-close"
+        popovertarget="explore-panel"
+        popovertargetaction="hide"
+        aria-label="Cerrar Explorar"
+      >
+        <app-icon name="close" />
+      </button>
+    </div>
+    <div class="explore-groups">
+      @for (group of exploreGroups; track group.title) {
+        <section>
+          <div class="explore-group-title">
+            <strong>{{ group.title }}</strong
+            ><small>{{ group.description }}</small>
+          </div>
+          @for (link of group.links; track link.path) {
+            <a [routerLink]="link.path" (click)="closeExplore()"
+              ><span class="explore-link-icon"><app-icon [name]="link.icon" /></span
+              ><span
+                ><strong>{{ link.label }}</strong
+                ><small>{{ link.detail }}</small></span
+              ><app-icon class="explore-link-arrow" name="arrow"
+            /></a>
+          }
+        </section>
+      }
+    </div>
+    <div class="explore-note"><span class="status-dot"></span>Aprende · Comprueba · Documenta</div>
   </div>
 </header>
+<app-reading-tools />
 <main id="contenido" tabindex="-1"><router-outlet (activate)="onPageChange()" /></main>
 <app-achievement-notice />
-<footer class="site-footer">
-  <div class="container footer-grid">
+<footer class="site-footer compact-footer">
+  <div class="container footer-strip">
     <div>
       <a class="brand" routerLink="/">PHP2<span class="cyan">SHELL</span></a>
-      <p>Comprender el riesgo. Documentar la evidencia.</p>
-      <small>Proyecto educativo · Revisión: 26 de octubre de 2026</small>
+      <p>Entiende el problema. Construye tu conclusión.</p>
     </div>
-    <div>
-      <strong>Explorar</strong><a routerLink="/cronologia">Cronología</a
-      ><a routerLink="/vulnerabilidades">Los dos CVE</a
-      ><a routerLink="/laboratorio">Laboratorio de indicios</a>
-    </div>
-    <div>
-      <strong>Consultar</strong><a routerLink="/conclusiones">Conclusiones</a
-      ><a routerLink="/fuentes">Fuentes oficiales</a><a routerLink="/ayuda">Glosario y ayuda</a
-      ><a routerLink="/aula">Aula práctica e informes</a>
+    <div class="footer-quick">
+      <button type="button" popovertarget="explore-panel">
+        Explorar contenidos <app-icon name="layers" /></button
+      ><a routerLink="/fuentes">Fuentes y créditos</a
+      ><a routerLink="/ayuda">Ayuda y preferencias</a>
     </div>
   </div>
   <div class="container footer-bottom">
-    <span>Sin escaneos, sin backend, sin datos de servidores reales.</span
-    ><span>Twinteach es el caso de estudio; no se ha auditado su sistema.</span>
+    <span>Proyecto educativo · Contenido técnico revisado el 26/10/2026</span
+    ><span>Caso Twinteach: sin acceso a sus sistemas reales.</span>
   </div>
 </footer>

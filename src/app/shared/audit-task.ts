@@ -1,12 +1,12 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TaskDefinition, TaskStatus, STATUSES } from '../content/audit';
-import { ProgressService } from '../core/progress';
-import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui';
+import { ProgressService, TaskProgress } from '../core/progress';
+import { InfoExpanderComponent, IconComponent } from './ui';
 @Component({
   selector: 'app-audit-task',
-  imports: [FormsModule, RouterLink, InfoExpanderComponent, SourceRefsComponent, IconComponent],
+  imports: [FormsModule, RouterLink, InfoExpanderComponent, IconComponent],
   template: `<article class="audit-task" [class.task-verified]="current().status === 'verified'">
     <div class="task-heading">
       <span class="task-id mono">{{ task().id }}</span>
@@ -18,7 +18,17 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
         statusLabel(current().status)
       }}</span>
     </div>
-    <app-info-expander title="Ampliar información / ¿Cómo hago este paso?" [group]="task().section"
+    <dl class="task-purpose">
+      <div>
+        <dt>Por qué hacemos esto</dt>
+        <dd>{{ task().why }}</dd>
+      </div>
+      <div>
+        <dt>Qué dato debes obtener</dt>
+        <dd>{{ task().evidence }}</dd>
+      </div>
+    </dl>
+    <app-info-expander title="Ver cómo comprobarlo, paso a paso" [group]="task().section"
       ><div class="help-grid">
         <div>
           <h4>Qué comprobamos</h4>
@@ -56,10 +66,7 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
           </p>
         </div>
       </div>
-      <app-source-refs [ids]="task().sources" /><a
-        class="text-link"
-        routerLink="/aula"
-        [queryParams]="{ lesson: lessonIndex() }"
+      <a class="text-link" routerLink="/aula" [queryParams]="{ lesson: lessonIndex() }"
         >Ver explicación guiada de esta etapa <app-icon name="book" /></a
     ></app-info-expander>
     <form (ngSubmit)="save()" class="task-form">
@@ -72,7 +79,7 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
             [(ngModel)]="note"
             maxlength="4000"
             rows="3"
-            placeholder="Describe el dato o explica lo que falta."
+            placeholder="Qué comprobé, de dónde sale el dato y qué falta. Si no tengo acceso: motivo y siguiente paso."
             (ngModelChange)="saved.set(false)"
           ></textarea>
         </div>
@@ -84,7 +91,7 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
             [(ngModel)]="evidence"
             maxlength="4000"
             rows="3"
-            placeholder="Documento, registro o comprobación fechada. Sin datos sensibles."
+            [placeholder]="task().evidence + ' Incluye origen y fecha; sin datos sensibles.'"
             (ngModelChange)="saved.set(false)"
           ></textarea>
         </div>
@@ -108,8 +115,13 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
             Cargar ejemplo ficticio
           </button>
         }
-        <button class="button secondary" type="submit">
-          <app-icon name="check" /> Guardar tarea
+        <button
+          class="button"
+          [class.primary]="wizard()"
+          [class.secondary]="!wizard()"
+          type="submit"
+        >
+          <app-icon name="check" /> {{ wizard() ? 'Guardar y continuar' : 'Guardar tarea' }}
         </button>
       </div>
       <p class="field-help">
@@ -124,6 +136,9 @@ import { InfoExpanderComponent, SourceRefsComponent, IconComponent } from './ui'
 })
 export class AuditTaskComponent {
   readonly task = input.required<TaskDefinition>();
+  readonly wizard = input(false);
+  readonly draft = input<TaskProgress | null>(null);
+  readonly taskSaved = output<string>();
   readonly p = inject(ProgressService);
   readonly statuses = STATUSES;
   status: TaskStatus = 'not-started';
@@ -136,8 +151,9 @@ export class AuditTaskComponent {
   constructor() {
     effect(() => {
       const mode = this.p.mode();
-      const t = this.p.get(this.task().id);
-      const next = mode + this.task().id + JSON.stringify(t);
+      const stored = this.p.get(this.task().id);
+      const t = this.draft() ?? stored;
+      const next = mode + this.task().id + JSON.stringify([stored, this.draft()]);
       if (next === this.signature) return;
       this.signature = next;
       this.status = t.status;
@@ -158,8 +174,21 @@ export class AuditTaskComponent {
     return STATUSES.find((x) => x.id === s)!.label;
   }
   save() {
+    if (
+      this.wizard() &&
+      (this.status === 'not-started' || (this.status === 'in-review' && !this.note.trim()))
+    ) {
+      this.error.set(
+        'Elige un estado y explica qué has comprobado o qué falta. También puedes dejar la tarea para después.',
+      );
+      return;
+    }
     this.error.set(this.p.updateTask(this.task().id, this.status, this.note, this.evidence));
     this.saved.set(!this.error());
+    if (!this.error() && this.wizard()) this.taskSaved.emit(this.task().id);
+  }
+  draftValue(): TaskProgress {
+    return { status: this.status, note: this.note, evidence: this.evidence };
   }
   fillDemo() {
     this.note =

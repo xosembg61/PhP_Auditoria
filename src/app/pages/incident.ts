@@ -1,11 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import {
-  IconComponent,
-  PageHeaderComponent,
-  SourceRefsComponent,
-  InfoExpanderComponent,
-} from '../shared/ui';
+import { IconComponent, PageHeaderComponent, InfoExpanderComponent } from '../shared/ui';
 import { LearningVideoComponent } from '../shared/learning-video';
 import { INCIDENT_FLOWS, INCIDENT_TERMS, INCIDENT_FAQ } from '../content/incident-explainer';
 @Component({
@@ -13,7 +8,7 @@ import { INCIDENT_FLOWS, INCIDENT_TERMS, INCIDENT_FAQ } from '../content/inciden
     RouterLink,
     IconComponent,
     PageHeaderComponent,
-    SourceRefsComponent,
+
     InfoExpanderComponent,
     LearningVideoComponent,
   ],

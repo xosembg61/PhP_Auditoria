@@ -7,8 +7,8 @@
   <div class="academy-intro">
     <span class="badge">APRENDE A TU RITMO</span>
     <p>
-      Las explicaciones enlazan documentación primaria. Los ejercicios no revisan servidores ni
-      completan la checklist por ti.
+      Las explicaciones distinguen hechos, ejemplos y límites. Los ejercicios no revisan servidores
+      ni completan la checklist por ti.
     </p>
   </div>
   <nav class="academy-tabs" aria-label="Secciones del aula">
@@ -71,18 +71,6 @@
               }
             </section>
           }
-          <app-learning-video
-            [id]="
-              lessonIndex() === 0
-                ? 'php-intro'
-                : lessonIndex() === 1
-                  ? 'laravel-intro'
-                  : lessonIndex() === 4
-                    ? 'investigation'
-                    : 'discovery'
-            "
-            [compact]="true"
-          />
           <h3 class="walkthrough-title">Cómo trabajar este paso</h3>
           <ol class="lesson-walkthrough">
             @for (s of lesson().steps; track s.title; let i = $index) {
@@ -154,7 +142,7 @@
               auditoría.
             </p>
           </section>
-          <app-source-refs [ids]="lesson().sources" />
+
           <div class="lesson-bottom">
             <a
               class="button primary"
@@ -245,8 +233,8 @@
                     class="text-link"
                     routerLink="/auditoria"
                     [queryParams]="{ section: a.section }"
-                    >Documentar en la sección {{ a.section }} <app-icon name="arrow" /></a
-                  ><app-source-refs [ids]="a.sources" />
+                    >Documentar en la sección {{ a.section }} <app-icon name="arrow"
+                  /></a>
                 </li>
               }
             </ol>
@@ -369,36 +357,20 @@
       <div class="callout">
         <strong>Cómo usar las lecturas</strong>
         <p>
-          Empieza por una lección, abre la fuente que respalda el dato y vuelve a la checklist para
-          documentarlo. Los informes son material propio basado en fuentes primarias; no sustituyen
-          los avisos del proveedor de tu servidor.
+          Empieza por una lección, razona sobre el ejemplo y vuelve a la auditoría para documentar
+          tu comprobación. Los informes son material propio basado en fuentes primarias; no
+          sustituyen los avisos del proveedor de tu servidor.
         </p>
       </div>
-      <div class="section-heading section-space">
-        <div>
-          <span class="eyebrow">DOCUMENTACIÓN PRIMARIA SELECCIONADA</span>
-          <h2>Lee con una pregunta concreta.</h2>
-        </div>
-      </div>
-      <div class="resource-grid">
-        @for (r of resourceCards; track r.id) {
-          @if (source(r.id); as s) {
-            <article class="panel">
-              <span class="badge">{{ r.level }}</span>
-              <h3>{{ r.label }}</h3>
-              <p>{{ r.how }}</p>
-              <small>{{ s.org }} · {{ s.date }}</small
-              ><a class="text-link" [href]="s.url" target="_blank" rel="noopener noreferrer"
-                >Abrir fuente <app-icon name="external"
-              /></a>
-            </article>
-          }
-        }
-      </div>
-      <p class="field-help">
-        Fuentes revisadas el 26 de octubre de 2026. Comprueba de nuevo los avisos antes de realizar
-        una actuación real.
-      </p>
+      <section class="aula-video-resources">
+        <span class="eyebrow">DOS MIRADAS COMPLEMENTARIAS</span>
+        <h2>El lenguaje y la observación del sistema.</h2>
+        <p>
+          Una introducción breve a PHP y otra mirada sobre cómo relacionar las señales de distintos
+          servicios.
+        </p>
+        <app-learning-video id="php-intro" /><app-learning-video id="observability" />
+      </section>
     }
   </div>
 </div>

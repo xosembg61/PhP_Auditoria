@@ -1,19 +1,14 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import {
-  PageHeaderComponent,
-  IconComponent,
-  SourceRefsComponent,
-  InfoExpanderComponent,
-} from '../shared/ui';
+import { PageHeaderComponent, IconComponent, InfoExpanderComponent } from '../shared/ui';
 import { TIMELINE } from '../content/incident';
 import { REFERENCES, GLOSSARY } from '../content/references';
 import { ProgressService } from '../core/progress';
-import { LearningVideoComponent } from '../shared/learning-video';
-import { MEDIA_CREDITS } from '../content/media';
-const ui = [RouterLink, PageHeaderComponent, IconComponent, SourceRefsComponent];
+import { MEDIA_CREDITS, LEARNING_VIDEOS } from '../content/media';
+import { AppearanceService } from '../core/appearance';
+const ui = [RouterLink, PageHeaderComponent, IconComponent];
 @Component({
-  imports: [...ui, LearningVideoComponent],
+  imports: ui,
   template: `<div class="container page">
     <app-page-header
       eyebrow="Cronología"
@@ -38,7 +33,7 @@ const ui = [RouterLink, PageHeaderComponent, IconComponent, SourceRefsComponent]
         <div class="timeline-date mono">{{ current().date }}</div>
         <h2>{{ current().title }}</h2>
         <p>{{ current().text }}</p>
-        <app-source-refs [ids]="[current().source]" />
+
         <div class="callout">
           <strong>Lee el hecho con su alcance.</strong>
           <p>
@@ -51,7 +46,17 @@ const ui = [RouterLink, PageHeaderComponent, IconComponent, SourceRefsComponent]
         /></a>
       </article>
     </div>
-    <section class="section-space"><app-learning-video id="discovery" /></section>
+    <figure class="timeline-photo">
+      <img
+        src="assets/images/servidores-nersc.jpg"
+        alt="Racks de servidores, imagen de contexto"
+        loading="lazy"
+      />
+      <figcaption>
+        Una investigación conecta hechos, fechas y contextos. Fotografía de contexto; no corresponde
+        a Twinteach.
+      </figcaption>
+    </figure>
   </div>`,
 })
 export class TimelinePage {
@@ -98,7 +103,6 @@ export class TimelinePage {
             para el estado técnico actualizado.
           </p>
         }
-        <app-source-refs [ids]="['oom']" />
       </article>
       <article class="panel">
         <div class="split">
@@ -120,7 +124,6 @@ export class TimelinePage {
             produce estado persistente y otra lo consume antes de reinicializarlo.
           </p>
         }
-        <app-source-refs [ids]="['state']" />
       </article>
     </div>
     <div class="callout warning">
@@ -175,7 +178,7 @@ export class VulnerabilitiesPage {
         </article>
       }
     </div>
-    <app-source-refs [ids]="['php', 'state', 'aws']" />
+
     <div class="panel action-panel">
       <span class="eyebrow">QUÉ HARÍA PRIMERO UN RESPONSABLE</span>
       <h2>Localizar → corregir → verificar → investigar.</h2>
@@ -248,9 +251,27 @@ export class ConclusionsPage {
         posible compromiso. Esta aplicación no ha accedido a sus sistemas.
       </p>
       <p>
-        <strong>Regla editorial:</strong> los hechos técnicos enlazan fuentes; las recomendaciones
-        de procedimiento se presentan como guía; los registros del laboratorio son inventados.
+        <strong>Regla editorial:</strong> las referencias técnicas se reúnen en esta página; las
+        recomendaciones de procedimiento se presentan como guía; los registros del laboratorio son
+        inventados.
       </p>
+    </section>
+    <section class="section-space">
+      <span class="eyebrow">VÍDEOS DEL RECORRIDO</span>
+      <h2>Siete recursos, distintas miradas.</h2>
+      <p>
+        Las explicaciones introductorias y los análisis del incidente tienen propósitos diferentes.
+        Cada recurso indica su contexto.
+      </p>
+      <div class="media-reference-list">
+        @for (v of videos; track v.id) {
+          <a [href]="v.source" target="_blank" rel="noopener noreferrer"
+            ><strong>{{ v.title }} <app-icon name="external" /></strong
+            ><small>{{ v.author }} · {{ v.language }}</small>
+            <p>{{ v.purpose }}</p></a
+          >
+        }
+      </div>
     </section>
     <section class="section-space">
       <h2>Créditos de las imágenes</h2>
@@ -272,9 +293,44 @@ export class ConclusionsPage {
         Twinteach ni evidencias del incidente.
       </p>
     </section>
+    <section class="panel section-space uiverse-credits">
+      <h2>Componentes visuales de Uiverse</h2>
+      <p>
+        Interruptor de tema adaptado del diseño de
+        <a
+          href="https://uiverse.io/JkHuger/itchy-turtle-45"
+          target="_blank"
+          rel="noopener noreferrer"
+          >JkHuger</a
+        >. Botón de regreso al inicio adaptado del diseño de
+        <a
+          href="https://uiverse.io/vinodjangid07/afraid-falcon-17"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Vinod Jangid</a
+        >.
+      </p>
+      <p>
+        Tarjetas adaptadas de
+        <a
+          href="https://uiverse.io/Smit-Prajapati/great-bat-98"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Smit-Prajapati</a
+        >
+        y botón de reproducción y acabado de botones adaptados de
+        <a
+          href="https://uiverse.io/adamgiebl/wise-moth-35"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Adam Giebl</a
+        >. Se conservan las licencias MIT y los créditos de cada autor.
+      </p>
+    </section>
   </div>`,
 })
 export class SourcesPage {
+  readonly videos = LEARNING_VIDEOS;
   readonly credits = MEDIA_CREDITS;
   readonly sources = REFERENCES;
 }
@@ -328,6 +384,25 @@ export class SourcesPage {
     </section>
     <section class="panel section-space">
       <h2>Preferencias y progreso local</h2>
+      <div class="appearance-settings">
+        <label for="theme-preference">Aspecto de la web</label>
+        <select
+          id="theme-preference"
+          [value]="appearance.preference()"
+          (change)="appearance.setPreference($any($event.target).value)"
+        >
+          <option value="light">Claro</option>
+          <option value="dark">Oscuro</option>
+          <option value="system">Automático · seguir el sistema</option>
+        </select>
+        <p class="field-help">
+          El botón de sol y luna cambia el tema al instante. La elección se conserva al volver. En
+          automático, la web sigue el aspecto del dispositivo.
+        </p>
+        @if (appearance.storageNotice()) {
+          <p role="status">{{ appearance.storageNotice() }}</p>
+        }
+      </div>
       <button class="button secondary" (click)="p.setHelpDetail(!p.detailedHelp())">
         {{ p.detailedHelp() ? 'Cerrar ayudas por defecto' : 'Abrir ayudas ampliadas por defecto' }}
       </button>
@@ -337,7 +412,10 @@ export class SourcesPage {
           Borrar mi progreso de ambos modos
         </button>
       } @else {
-        <p>Se borrarán tareas, capítulos, laboratorio y preferencias de esta aplicación.</p>
+        <p>
+          Se borrarán tareas, capítulos, laboratorio y ayudas de esta aplicación. La elección de
+          tema se conserva.
+        </p>
         <div class="button-row">
           <button class="button danger" (click)="p.clearAll(); confirmClear.set(false)">
             Sí, borrar mi progreso</button
@@ -358,6 +436,7 @@ export class SourcesPage {
   </div>`,
 })
 export class HelpPage {
+  readonly appearance = inject(AppearanceService);
   readonly glossary = GLOSSARY;
   readonly p = inject(ProgressService);
   readonly confirmClear = signal(false);

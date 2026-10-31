@@ -1,0 +1,174 @@
+<div class="container page guide-page continuous-guide">
+  <app-page-header
+    eyebrow="Guía"
+    title="Un recorrido que se lee de principio a fin."
+    description="Las seis etapas están aquí, juntas. Lee, consulta los ejemplos y continúa al siguiente paso sin volver a cambiar de pantalla."
+  />
+  <div class="guide-start panel">
+    <div>
+      <span class="eyebrow">EMPIEZA POR UNA IDEA</span>
+      <h2>Entender → comprobar → explicar.</h2>
+      <p>
+        No necesitas conocer todos los términos. Cada capítulo explica una pregunta, tres acciones y
+        el resultado que deberías poder documentar.
+      </p>
+    </div>
+    <div class="guide-mode-choices" role="group" aria-label="Cómo quiero trabajar">
+      <button
+        type="button"
+        class="button"
+        [class.primary]="p.mode() === 'demo'"
+        [class.secondary]="p.mode() !== 'demo'"
+        [attr.aria-pressed]="p.mode() === 'demo'"
+        (click)="p.setMode('demo')"
+      >
+        Aprender con DEMO</button
+      ><button
+        type="button"
+        class="button"
+        [class.primary]="p.mode() === 'template'"
+        [class.secondary]="p.mode() !== 'template'"
+        [attr.aria-pressed]="p.mode() === 'template'"
+        (click)="p.setMode('template')"
+      >
+        Documentar con PLANTILLA
+      </button>
+    </div>
+  </div>
+  <div class="guide-flow-layout">
+    <aside class="guide-companion">
+      <span class="eyebrow">TU MAPA DE LECTURA</span>
+      <h2>Seis pasos. Un mismo método.</h2>
+      <nav class="guide-toc" aria-label="Índice de la guía continua">
+        @for (c of chapters; track c.title; let i = $index) {
+          <button
+            type="button"
+            (click)="jump(i)"
+            [attr.aria-label]="'Ir al capítulo ' + (i + 1) + ': ' + c.title"
+          >
+            <span [class.read]="p.state().chapters.includes(i)">{{
+              p.state().chapters.includes(i) ? '✓' : '0' + (i + 1)
+            }}</span
+            ><strong>{{ c.title }}</strong>
+          </button>
+        }
+      </nav>
+      <div class="guide-reading-count">
+        <strong>{{ p.state().chapters.length }} / 6</strong
+        ><span>capítulos marcados como leídos</span>
+        <div class="tiny-reading-track">
+          <i [style.width.%]="(p.state().chapters.length / 6) * 100"></i>
+        </div>
+        <small
+          >La lectura y las {{ p.count() }} tareas documentadas tienen su propio progreso.</small
+        >
+      </div>
+      <a class="text-link" routerLink="/aula"
+        >Necesito un ejemplo más despacio <app-icon name="book"
+      /></a>
+    </aside>
+    <div class="guide-chapters">
+      @for (c of chapters; track c.title; let i = $index) {
+        <article class="panel guide-chapter" [attr.aria-labelledby]="'guide-chapter-' + i">
+          <div class="guide-chapter-banner">
+            <span class="chapter-badge">0{{ i + 1 }}</span>
+            <div>
+              <span class="eyebrow">{{ c.subtitle }}</span>
+              <h2 [id]="'guide-chapter-' + i" tabindex="-1">{{ c.title }}</h2>
+            </div>
+            <span class="guide-read-badge">{{
+              p.state().chapters.includes(i) ? 'Leído' : 'A tu ritmo'
+            }}</span>
+          </div>
+          <section class="chapter-simple">
+            <span class="plain-label">LA IDEA, EN PALABRAS SENCILLAS</span>
+            <h3>{{ walkthroughs[i].question }}</h3>
+            <p class="lead">{{ walkthroughs[i].idea }}</p>
+          </section>
+          <section class="chapter-steps">
+            <h3>Haz estas tres cosas</h3>
+            <ol class="plain-steps">
+              @for (step of walkthroughs[i].steps; track step) {
+                <li>{{ step }}</li>
+              }
+            </ol>
+          </section>
+          <div class="worked-note">
+            <strong>Un ejemplo para situarte</strong>
+            <p>{{ walkthroughs[i].example }}</p>
+          </div>
+          <p class="guide-limit">
+            <app-icon name="info" /><span>{{ walkthroughs[i].limit }}</span>
+          </p>
+          <div class="guide-outcome">
+            <span class="outcome-icon"><app-icon name="check" /></span>
+            <div>
+              <strong>Al terminar este capítulo</strong>
+              <p>{{ walkthroughs[i].next }}</p>
+            </div>
+          </div>
+          <div class="button-row">
+            <a
+              class="button primary"
+              [routerLink]="c.route"
+              [queryParams]="c.section ? { section: c.section } : {}"
+              >{{ c.action }} <app-icon name="arrow" /></a
+            ><a class="text-link" routerLink="/aula" [queryParams]="{ lesson: i }"
+              >Abrir ejemplo guiado <app-icon name="book"
+            /></a>
+          </div>
+          <app-info-expander title="Ampliar el método"
+            ><p>{{ c.text }}</p>
+            <p><strong>Resultado:</strong> {{ c.expected }}</p>
+            <p>{{ c.example }}</p></app-info-expander
+          >
+          @if (i === 1) {
+            <app-learning-video id="laravel-intro" />
+          }
+          @if (i === 3) {
+            <app-learning-video id="security-basics" />
+          }
+          <div class="guide-chapter-end">
+            <button
+              type="button"
+              class="text-button"
+              (click)="p.markChapter(i)"
+              [disabled]="p.state().chapters.includes(i)"
+            >
+              <app-icon name="check" />{{
+                p.state().chapters.includes(i) ? 'Lectura guardada' : 'Marcar como leído'
+              }}
+            </button>
+            @if (i < 5) {
+              <button type="button" class="text-link" (click)="jump(i + 1)">
+                Continuar con el paso {{ i + 2 }} <span aria-hidden="true">↓</span>
+              </button>
+            } @else {
+              <a class="text-link" routerLink="/auditoria"
+                >Ahora, hacer la revisión <app-icon name="arrow"
+              /></a>
+            }
+          </div>
+        </article>
+      }
+      <section class="guide-finish panel">
+        <span class="eyebrow">EL RECORRIDO CONTINÚA</span>
+        <h2>Ahora puedes construir una conclusión.</h2>
+        <p>
+          La auditoría te acompaña comprobación a comprobación. Al terminar verás qué has
+          documentado y qué sigue pendiente.
+        </p>
+        <div class="button-row">
+          <a class="button primary" routerLink="/auditoria"
+            >Empezar auditoría <app-icon name="shield" /></a
+          ><a class="button secondary" routerLink="/aula" [queryParams]="{ tab: 'resources' }"
+            >Materiales descargables <app-icon name="download"
+          /></a>
+        </div>
+        @if (p.state().chapters.length === 6) {
+          <span class="badge success">Logro de aprendizaje desbloqueado</span>
+        }
+      </section>
+    </div>
+  </div>
+</div>

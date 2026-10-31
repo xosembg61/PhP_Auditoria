@@ -1,6 +1,6 @@
 # Revisión visual y funcional
 
-Las 79 pruebas automatizadas y la compilación han pasado. Se ha realizado una revisión visual representativa en navegador: portada e incidente a 390 px, guía a 900 px y portada, incidente y auditoría a 1440 px. Se comprobó el menú móvil, el cambio de esquema del incidente y la reproducción del vídeo de Wiz. La lista siguiente conserva las comprobaciones completas pendientes; no se presenta toda la matriz como realizada.
+Las 89 pruebas automatizadas y la compilación han pasado. Se ha realizado una revisión visual representativa en navegador: portada e incidente a 390 px, guía a 900 px y portada, incidente y auditoría a 1440 px. Se comprobó el menú móvil, el cambio de esquema del incidente y la reproducción del vídeo de Wiz. La lista siguiente conserva las comprobaciones completas pendientes; no se presenta toda la matriz como realizada.
 
 ## Inicio y navegación
 
@@ -93,3 +93,7 @@ Las 79 pruebas automatizadas y la compilación han pasado. Se ha realizado una r
 - [ ] Comprobar impresión del informe desde el navegador del propietario.
 
 Se comprobó el laboratorio a 320 px después de corregir el contenedor de tabla: la tabla conserva su desplazamiento interno sin ampliar la página.
+
+Actualización 28/10: consultar ACTUALIZACION_TEMA_Y_GUIA.md para los dos temas, búsqueda y nuevas explicaciones. La revisión visual actual es de escritorio; quedan pendientes los tamaños de móvil y tablet para los controles nuevos.
+
+La versión vigente cambia a lectura continua y auditoría por pasos. La revisión responsive y multimedia de esta entrega está documentada en RETOQUES_NAVEGACION_AUDITORIA.md; las listas anteriores se conservan como registro de versiones previas.

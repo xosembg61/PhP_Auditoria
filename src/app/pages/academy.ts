@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LearningVideoComponent } from '../shared/learning-video';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LESSONS, EVIDENCE_DRILLS } from '../content/learning';
@@ -14,12 +15,7 @@ import {
   actionPlanMarkdown,
   supportRequestMarkdown,
 } from '../core/action-plan';
-import {
-  PageHeaderComponent,
-  IconComponent,
-  SourceRefsComponent,
-  InfoExpanderComponent,
-} from '../shared/ui';
+import { PageHeaderComponent, IconComponent, InfoExpanderComponent } from '../shared/ui';
 @Component({
   imports: [
     FormsModule,
@@ -27,7 +23,7 @@ import {
     RouterLink,
     PageHeaderComponent,
     IconComponent,
-    SourceRefsComponent,
+
     InfoExpanderComponent,
   ],
   templateUrl: './academy.html',
@@ -108,12 +104,16 @@ export class AcademyPage {
     },
   ];
   constructor() {
-    const params = inject(ActivatedRoute).snapshot.queryParamMap;
-    const index = Number(params.get('lesson'));
-    if (params.has('lesson') && Number.isInteger(index) && index >= 0 && index < LESSONS.length)
-      this.lessonIndex.set(index);
-    const tab = params.get('tab');
-    if (this.tabs.some((t) => t.id === tab)) this.activeTab.set(tab!);
+    inject(ActivatedRoute)
+      .queryParamMap.pipe(takeUntilDestroyed())
+      .subscribe((params) => {
+        const index = Number(params.get('lesson'));
+        if (params.has('lesson') && Number.isInteger(index) && index >= 0 && index < LESSONS.length)
+          this.lessonIndex.set(index);
+        const tab = params.get('tab');
+        if (this.tabs.some((t) => t.id === tab)) this.activeTab.set(tab!);
+        else if (params.has('lesson')) this.activeTab.set('lessons');
+      });
   }
   source = refById;
   setDepth(value: 'simple' | 'technical') {

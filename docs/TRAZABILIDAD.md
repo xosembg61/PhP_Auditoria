@@ -16,7 +16,7 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 | 14. Conclusiones y fuentes        | Páginas de conclusiones, bibliografía y fecha de revisión                                                                                     |
 | 15–17. Implementación y calidad   | Angular standalone, signals, servicios, carga de rutas, localStorage validado, exportaciones, foco y etiquetas                                |
 | 18. Publicación                   | Guía y workflow de ejemplo inactivo; hash y base relativa; sin despliegue                                                                     |
-| 19. Aceptación                    | 79 pruebas automatizadas; revisión visual representativa en navegador                                                                              |
+| 19. Aceptación                    | 95 pruebas automatizadas; revisión visual representativa en navegador                                                                              |
 | 20–22. Decisiones                 | Nombre PHP2SHELL; tema claro por petición posterior; sin sonido; JSON y HTML; tres casos; ninguna cuenta GitHub presupuesta                                         |
 
 ## Ajustes frente a la especificación original
@@ -31,7 +31,7 @@ Referencia: PHP2Shell_Especificacion_Ultra_Detallada_Angular_Work(1).md, versió
 
 ## Validación realizada
 
-79 pruebas / 11 archivos de pruebas aprobadas con Vitest y Angular. Compilación de producción sin errores. Pruebas de todas las rutas y formularios en DOM de pruebas.
+95 pruebas / 16 archivos de pruebas aprobadas con Vitest y Angular. Compilación de producción sin errores. Pruebas de todas las rutas y formularios en DOM de pruebas.
 
 **Revisión visual:** portada e incidente en móvil de 390 px; guía a 900 px; portada, incidente y auditoría a 1440 px. El vídeo de Wiz se reprodujo dentro de la página. No se ha completado toda la matriz manual ni se ha publicado en GitHub Pages.
 
@@ -44,3 +44,9 @@ Se añadió el Aula práctica con seis lecciones de dos niveles, pasos y ejemplo
 La petición posterior sustituye el tema oscuro por una presentación clara. Se añaden fotografías reales con créditos, cuatro recursos audiovisuales verificados, notas propias en español y distribución contextual. El incidente conserva el material anterior y suma explicaciones iniciales, tres esquemas, consecuencias, historia, perfiles de actuación y ocho preguntas frecuentes. No se utilizan imágenes de IA. Ver RECURSOS_VISUALES.md.
 
 Se comprobó el laboratorio a 320 px después de corregir el contenedor de tabla: la tabla conserva su desplazamiento interno sin ampliar la página.
+
+## Tema y método explicativo · 28/10/2026
+
+Se añade elección persistente claro/oscuro/automático, búsqueda interna, progreso de recorrido y regreso arriba. La auditoría presenta el problema y el propósito/evidencia de cada tarea, además de guías para las cinco etapas. La guía reorganiza sus seis capítulos para mostrar primero una idea sencilla, tres acciones y un resultado. Se mantienen separados lectura, documentación y estado real del entorno. Ver ACTUALIZACION_TEMA_Y_GUIA.md.
+
+Retoques finales: navegación Explorar, guía continua, auditoría por comprobaciones y siete vídeos únicos. Ver RETOQUES_NAVEGACION_AUDITORIA.md para la validación y sus límites.

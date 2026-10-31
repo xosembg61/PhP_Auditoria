@@ -15,6 +15,54 @@ export interface LearningVideo {
 }
 export const LEARNING_VIDEOS: LearningVideo[] = [
   {
+    id: 'php-es',
+    title: 'Aprende PHP 8 desde cero: Curso para principiantes + Aplicación con Deploy',
+    author: 'midulive',
+    date: 'Curso introductorio anterior al incidente',
+    language: 'Español · curso para estudiar por partes',
+    kind: 'youtube',
+    videoId: 'BcGAPkjt_IE',
+    url: 'https://www.youtube.com/watch?v=BcGAPkjt_IE',
+    source: 'https://www.youtube.com/watch?v=BcGAPkjt_IE',
+    purpose:
+      'Ver cómo se ejecuta PHP y situarlo dentro de una aplicación web. Empieza por la introducción y continúa a tu ritmo.',
+    takeaway:
+      'Es un curso de programación. Las decisiones sobre PHP2Shell se apoyan en los avisos del incidente, no en las versiones empleadas en el tutorial.',
+    poster: 'php-es',
+  },
+  {
+    id: 'security-basics',
+    title: 'Ciberseguridad para la empresa (1/4)',
+    author: 'INCIBE',
+    date: '20/11/2015 · fundamentos',
+    language: 'Español · concienciación y protección de la información',
+    kind: 'youtube',
+    videoId: 'EHjmxujXIaQ',
+    url: 'https://www.youtube.com/watch?v=EHjmxujXIaQ',
+    source: 'https://www.youtube.com/watch?v=EHjmxujXIaQ',
+    purpose:
+      'Entender por qué las personas, los procesos y las medidas técnicas forman parte de la protección de una organización.',
+    takeaway:
+      'Recurso general de concienciación, anterior a PHP2Shell. Ayuda a pensar en capas de defensa y responsabilidades; no explica el parche de PHP.',
+    poster: 'security',
+  },
+  {
+    id: 'observability',
+    title: 'OpenTelemetry: Simplifying Hybrid Cloud Monitoring',
+    author: 'IBM Technology',
+    date: 'Introducción general a observabilidad',
+    language: 'Inglés · explicación visual de telemetría',
+    kind: 'youtube',
+    videoId: 'hLvwoow3XTk',
+    url: 'https://www.youtube.com/watch?v=hLvwoow3XTk',
+    source: 'https://www.youtube.com/watch?v=hLvwoow3XTk',
+    purpose:
+      'Comprender cómo se relacionan señales de componentes distintos para observar el comportamiento de una aplicación.',
+    takeaway:
+      'Tener telemetría ayuda a dar contexto, pero su cobertura y calidad determinan qué puedes concluir. Este recurso no atribuye una intrusión a PHP2Shell.',
+    poster: 'observability',
+  },
+  {
     id: 'php-intro',
     title: 'PHP in 100 Seconds',
     author: 'Fireship',

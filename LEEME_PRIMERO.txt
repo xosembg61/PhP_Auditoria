@@ -1,0 +1,40 @@
+PHP2Shell - ABRIR EN WINDOWS
+==========================
+
+El ZIP es una carpeta comprimida con la web y el proyecto Angular.
+No es un instalador: no hay que instalar el ZIP.
+
+PARA VER LA WEB
+1. Guarda PHP2Shell_Angular_Local.zip en tu PC.
+2. Haz clic derecho sobre el ZIP y elige "Extraer todo...".
+3. Abre la carpeta extraida y entra en PhP_Auditoria.
+4. Haz doble clic en ABRIR_WEB.cmd.
+5. Se abrira el navegador. Deja abierta la ventana del servidor.
+   Para detenerlo, vuelve a esa ventana y pulsa Ctrl+C.
+
+Esta opcion usa la web ya compilada, incluida en dist.
+No necesita npm ci, Angular CLI global, PowerShell 7 ni administrador.
+Necesita Node.js instalado y disponible en PATH. No instala nada por su cuenta.
+Si falta Node.js, su web oficial es https://nodejs.org/es/download
+Los videos externos necesitan conexion a Internet.
+
+SI FALLA
+- Descarga: comprueba que el archivo aparece en Descargas y termina en .zip.
+- Descompresion: usa "Extraer todo..."; no ejecutes el CMD dentro del ZIP.
+- No encuentras ABRIR_WEB: entra en la subcarpeta PhP_Auditoria.
+- No abras index.html con doble clic; utiliza ABRIR_WEB.cmd.
+- El puerto esta ocupado: el iniciador elige otro puerto libre.
+- El navegador no se abre: copia la direccion http://127.0.0.1 que aparece
+  en la ventana del servidor y pegala en el navegador.
+- Otro error: copia el texto exacto o envia una captura para revisarlo.
+
+PARA EDITAR EL PROYECTO ANGULAR
+Abre una terminal en PhP_Auditoria y ejecuta:
+  npm.cmd ci
+  npm.cmd start -- --open --port 4202
+Esta opcion si descarga las dependencias. Los requisitos de Node corresponden
+a la version de Angular fijada en package-lock.json.
+Despues de editar, ejecuta npm.cmd run build para renovar la vista compilada.
+
+La copia a tu carpeta GitHub original es opcional y se explica en README.md.
+Este inicio no copia archivos a otra carpeta ni publica la web.

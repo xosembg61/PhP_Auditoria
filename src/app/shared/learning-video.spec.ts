@@ -49,5 +49,11 @@ describe('vídeos contextuales', () => {
     expect(v.autoplay).toBe(false);
     expect(v.preload).toBe('none');
     expect(v.querySelector('source')?.src).toContain('watchTowr');
+    v.dispatchEvent(new Event('error'));
+    await f.whenStable();
+    expect(f.nativeElement.querySelector('video')).toBeNull();
+    expect(f.nativeElement.querySelector('.video-fallback a')?.getAttribute('href')).toBe(
+      'https://watchtowr.com/webinars/php2shell-threat-briefing/',
+    );
   });
 });

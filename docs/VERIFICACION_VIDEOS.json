@@ -1,0 +1,44 @@
+[
+  {
+    "id": "a7_WFUlFS94",
+    "status": "metadata verified",
+    "title": "PHP in 100 Seconds",
+    "author": "Fireship",
+    "url": "https://www.youtube.com/watch?v=a7_WFUlFS94"
+  },
+  {
+    "id": "rIfdg_Ot-LI",
+    "status": "metadata verified",
+    "title": "Laravel in 100 Seconds",
+    "author": "Fireship",
+    "url": "https://www.youtube.com/watch?v=rIfdg_Ot-LI"
+  },
+  {
+    "id": "lfEtbrz4-zY",
+    "status": "metadata verified",
+    "title": "Breaking Down PHP2Shell with Sagi Tzadik & Thai Duong",
+    "author": "Wiz",
+    "url": "https://www.youtube.com/watch?v=lfEtbrz4-zY"
+  },
+  {
+    "id": "BcGAPkjt_IE",
+    "status": "metadata verified",
+    "title": "Aprende PHP 8 desde cero: Curso para principiantes + Aplicación con Deploy",
+    "author": "midulive",
+    "url": "https://www.youtube.com/watch?v=BcGAPkjt_IE"
+  },
+  {
+    "id": "EHjmxujXIaQ",
+    "status": "metadata verified",
+    "title": "Ciberseguridad para la empresa  (1/4)",
+    "author": "INCIBE",
+    "url": "https://www.youtube.com/watch?v=EHjmxujXIaQ"
+  },
+  {
+    "id": "hLvwoow3XTk",
+    "status": "metadata verified",
+    "title": "OpenTelemetry: Simplifying Hybrid Cloud Monitoring",
+    "author": "IBM Technology",
+    "url": "https://www.youtube.com/watch?v=hLvwoow3XTk"
+  }
+]

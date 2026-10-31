@@ -13,6 +13,9 @@ describe('estructura de navegación', () => {
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('a.skip-link')).toBeTruthy();
     expect(root.querySelector('main#contenido')).toBeTruthy();
-    expect(root.querySelectorAll('nav a')).toHaveLength(6);
+    expect(root.querySelectorAll('#main-nav > a')).toHaveLength(3);
+    expect(root.querySelector('#main-nav button[popovertarget="explore-panel"]')).toBeTruthy();
+    expect(root.querySelectorAll('.explore-groups a')).toHaveLength(9);
+    expect(root.querySelector('[aria-label="Buscar contenido"]')).toBeTruthy();
   });
 });

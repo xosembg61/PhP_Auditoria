@@ -6,17 +6,32 @@ import { IconComponent } from './ui';
   selector: 'app-learning-video',
   imports: [IconComponent],
   template: `@if (video(); as v) {
-    <article class="learning-video" [class.compact-video]="compact()">
+    <article class="learning-video cinema-video" [class.compact-video]="compact()">
       <div [class]="'video-screen poster-' + v.poster">
         @if (!loaded()) {
-          <div class="video-placeholder">
-            <span class="video-kicker">{{
-              v.kind === 'youtube' ? 'YOUTUBE' : 'SESIÓN INFORMATIVA'
-            }}</span
-            ><button (click)="loaded.set(true)" [attr.aria-label]="'Cargar vídeo: ' + v.title">
-              <span class="play-symbol" aria-hidden="true">▶</span><span>Cargar vídeo</span></button
-            ><small>{{ v.language }}</small>
-          </div>
+          @if (v.kind === 'youtube' && !posterFailed()) {
+            <img
+              class="video-thumbnail"
+              [src]="'https://i.ytimg.com/vi/' + v.videoId + '/hqdefault.jpg'"
+              alt=""
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              (error)="posterFailed.set(true)"
+            />
+          }
+          <div class="video-poster-shade" aria-hidden="true"></div>
+          <span class="video-platform">{{
+            v.kind === 'youtube' ? 'YouTube' : 'Sesión informativa'
+          }}</span>
+          <button
+            type="button"
+            class="video-launch"
+            (click)="loaded.set(true)"
+            [attr.aria-label]="'Cargar vídeo: ' + v.title"
+          >
+            <span class="play-symbol" aria-hidden="true">▶</span><span>Ver vídeo</span>
+          </button>
+          <span class="video-language">{{ v.language }}</span>
         } @else {
           @if (v.kind === 'youtube') {
             <iframe
@@ -27,32 +42,52 @@ import { IconComponent } from './ui';
               allowfullscreen
               referrerpolicy="strict-origin-when-cross-origin"
             ></iframe>
+          } @else if (playbackFailed()) {
+            <div class="video-fallback" role="status">
+              <app-icon name="external" /><strong
+                >Esta grabación necesita abrirse en su plataforma.</strong
+              ><a class="button secondary" [href]="v.url" target="_blank" rel="noopener noreferrer"
+                >Abrir grabación original</a
+              >
+            </div>
           } @else {
-            <video controls preload="none" [attr.aria-label]="v.title">
-              <source [src]="v.mediaUrl" type="video/mp4" />
-              <a [href]="v.url">Ver en la fuente original</a>
+            <video
+              controls
+              preload="none"
+              [attr.aria-label]="v.title"
+              (error)="playbackFailed.set(true)"
+            >
+              <source [src]="v.mediaUrl" type="video/mp4" (error)="playbackFailed.set(true)" />
+              <a [href]="v.url">Ver grabación original</a>
             </video>
           }
-          <button class="hide-player" (click)="loaded.set(false)">Ocultar reproductor</button>
+          <button type="button" class="hide-player" (click)="loaded.set(false)">
+            Cerrar vídeo
+          </button>
         }
       </div>
       <div class="video-copy">
-        <span class="eyebrow">PARA ENTENDER ESTA PARTE</span>
-        <h3>{{ v.title }}</h3>
-        <p>{{ v.purpose }}</p>
-        <small class="video-byline">{{ v.author }} · {{ v.date }}</small>
-        <details class="video-notes">
-          <summary>Qué debes llevarte · explicación en español</summary>
-          <p>{{ v.takeaway }}</p>
-          <p>Nota de lectura propia; no es una transcripción ni una traducción del vídeo.</p>
-        </details>
-        <p class="field-help">
-          El reproductor externo solo se carga al pulsar el botón. Necesita conexión. Si no se
-          reproduce, abre la fuente.
-        </p>
-        <a class="text-link" [href]="v.source" target="_blank" rel="noopener noreferrer"
-          >Abrir fuente original <app-icon name="external"
-        /></a>
+        <div>
+          <span class="eyebrow">UNA MIRADA PARA ENTENDERLO MEJOR</span>
+          <h3>{{ v.title }}</h3>
+          <small class="video-byline">{{ v.author }} · {{ v.date }}</small>
+          <p>{{ v.purpose }}</p>
+        </div>
+        <div class="video-reading">
+          <details class="video-notes">
+            <summary>Qué debes llevarte</summary>
+            <p>{{ v.takeaway }}</p>
+            <small>Nota de lectura en español; no es una transcripción.</small>
+          </details>
+          <a class="text-link" [href]="v.url" target="_blank" rel="noopener noreferrer"
+            >{{ v.kind === 'youtube' ? 'Abrir en YouTube' : 'Abrir grabación original' }}
+            <app-icon name="external"
+          /></a>
+          <p class="field-help">
+            El reproductor necesita conexión y se activa al pulsar. Puedes abrirlo en su plataforma
+            si no se reproduce aquí.
+          </p>
+        </div>
       </div>
     </article>
   }`,
@@ -61,13 +96,15 @@ export class LearningVideoComponent {
   readonly id = input.required<string>();
   readonly compact = input(false);
   readonly loaded = signal(false);
-  readonly video = computed(() => LEARNING_VIDEOS.find((v) => v.id === this.id()));
+  readonly posterFailed = signal(false);
+  readonly playbackFailed = signal(false);
+  readonly video = computed(() => LEARNING_VIDEOS.find((video) => video.id === this.id()));
   private readonly sanitizer = inject(DomSanitizer);
   readonly embedUrl = computed(() => {
-    const v = this.video();
-    return v?.kind === 'youtube' && v.videoId
+    const video = this.video();
+    return video?.kind === 'youtube' && video.videoId
       ? this.sanitizer.bypassSecurityTrustResourceUrl(
-          'https://www.youtube-nocookie.com/embed/' + v.videoId + '?rel=0',
+          'https://www.youtube-nocookie.com/embed/' + video.videoId + '?rel=0',
         )
       : null;
   });
@@ -75,6 +112,8 @@ export class LearningVideoComponent {
     effect(() => {
       this.id();
       this.loaded.set(false);
+      this.playbackFailed.set(false);
+      this.posterFailed.set(false);
     });
   }
 }

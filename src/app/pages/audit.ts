@@ -1,54 +1,123 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { ProgressService } from '../core/progress';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ProgressService, TaskProgress } from '../core/progress';
+import { auditSummary } from '../core/audit-summary';
 import { SECTIONS, TASKS, STATUSES, AuditMode } from '../content/audit';
-import { PageHeaderComponent, IconComponent, ProgressRingComponent } from '../shared/ui';
+import { PageHeaderComponent, IconComponent } from '../shared/ui';
+import { AUDIT_WALKTHROUGHS } from '../content/walkthroughs';
 import { AuditTaskComponent } from '../shared/audit-task';
+
 @Component({
-  imports: [
-    FormsModule,
-    RouterLink,
-    PageHeaderComponent,
-    IconComponent,
-    ProgressRingComponent,
-    AuditTaskComponent,
-  ],
+  imports: [RouterLink, PageHeaderComponent, IconComponent, AuditTaskComponent],
   templateUrl: './audit.html',
 })
 export class AuditPage {
   readonly p = inject(ProgressService);
   readonly sections = SECTIONS;
-  readonly statuses = STATUSES;
   readonly tasks = TASKS;
-  readonly active = signal('A');
+  readonly index = signal(0);
+  readonly results = signal(false);
   readonly confirmReset = signal(false);
+  readonly task = computed(() => TASKS[this.index()]);
+  readonly section = computed(() =>
+    SECTIONS.find((section) => section.id === this.task().section)!,
+  );
+  readonly sectionTasks = computed(() =>
+    TASKS.filter((task) => task.section === this.task().section),
+  );
+  readonly sectionPosition = computed(
+    () => this.sectionTasks().findIndex((task) => task.id === this.task().id) + 1,
+  );
+  readonly walkthrough = computed(() => AUDIT_WALKTHROUGHS[this.task().section]);
+  readonly summary = computed(() => auditSummary(this.p.state().tasks));
+  private readonly drafts = new Map<string, TaskProgress>();
+  @ViewChild(AuditTaskComponent) private editor?: AuditTaskComponent;
   constructor() {
-    const q = inject(ActivatedRoute).snapshot.queryParamMap.get('section');
-    if (SECTIONS.some((s) => s.id === q)) this.active.set(q!);
+    this.index.set(this.firstPending());
+    inject(ActivatedRoute)
+      .queryParamMap.pipe(takeUntilDestroyed())
+      .subscribe((params) => {
+        const section = params.get('section');
+        const index = TASKS.findIndex((task) => task.section === section);
+        if (index >= 0) this.go(index);
+      });
   }
-  sectionTasks() {
-    return TASKS.filter((t) => t.section === this.active());
+  private firstPending() {
+    const index = TASKS.findIndex((task) =>
+      ['not-started', 'in-review', 'blocked'].includes(this.p.get(task.id).status),
+    );
+    return index >= 0 ? index : 0;
   }
-  currentSection() {
-    return SECTIONS.find((s) => s.id === this.active())!;
+  draft() {
+    return this.drafts.get(this.p.mode() + ':' + this.task().id) ?? null;
   }
-  changeMode(mode: string) {
-    this.p.setMode(mode as AuditMode);
+  private cacheDraft() {
+    if (this.editor)
+      this.drafts.set(this.p.mode() + ':' + this.task().id, this.editor.draftValue());
+  }
+  private focusCard() {
+    setTimeout(() => {
+      const heading = document.getElementById(
+        this.results() ? 'audit-results-title' : 'audit-step-heading',
+      );
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView?.({
+        block: 'start',
+        behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+          ? 'instant'
+          : 'smooth',
+      });
+    });
+  }
+  go(index: number) {
+    if (!Number.isInteger(index) || index < 0 || index >= TASKS.length) return;
+    this.cacheDraft();
+    this.results.set(false);
+    this.index.set(index);
+    this.focusCard();
+  }
+  chooseSection(id: string) {
+    this.go(TASKS.findIndex((task) => task.section === id));
+  }
+  revisit(id: string) {
+    this.go(TASKS.findIndex((task) => task.id === id));
+  }
+  saved(id: string) {
+    this.drafts.delete(this.p.mode() + ':' + id);
+    if (this.index() < TASKS.length - 1) {
+      this.index.update((index) => index + 1);
+      this.focusCard();
+    } else this.showResults(false);
+  }
+  leavePending() {
+    this.cacheDraft();
+    if (this.index() < TASKS.length - 1) this.index.update((index) => index + 1);
+    else this.results.set(true);
+    this.focusCard();
+  }
+  showResults(cache = true) {
+    if (cache) this.cacheDraft();
+    this.results.set(true);
+    this.focusCard();
+  }
+  changeMode(mode: AuditMode) {
+    if (mode === this.p.mode()) return;
+    this.cacheDraft();
+    this.p.setMode(mode);
+    this.index.set(this.firstPending());
+    this.results.set(false);
     this.confirmReset.set(false);
   }
-  statusCount(id: string) {
-    return (
-      Object.values(this.p.state().tasks).filter((t) => t.status === id).length +
-      (id === 'not-started' ? TASKS.length - Object.keys(this.p.state().tasks).length : 0)
-    );
-  }
-  navigate(delta: number) {
-    const i = SECTIONS.findIndex((s) => s.id === this.active());
-    if (SECTIONS[i + delta]) this.active.set(SECTIONS[i + delta].id);
+  statusLabel(status: string) {
+    return STATUSES.find((item) => item.id === status)?.label ?? 'No iniciada';
   }
   reset() {
+    const mode = this.p.mode();
+    for (const key of this.drafts.keys()) if (key.startsWith(mode + ':')) this.drafts.delete(key);
     this.p.resetMode();
+    this.index.set(0);
+    this.results.set(false);
     this.confirmReset.set(false);
   }
 }

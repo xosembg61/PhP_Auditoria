@@ -9,16 +9,10 @@ import {
   LogEvent,
 } from '../content/laboratory';
 import { ProgressService } from '../core/progress';
-import { PageHeaderComponent, IconComponent, SourceRefsComponent } from '../shared/ui';
+import { PageHeaderComponent, IconComponent } from '../shared/ui';
 const blank = (): LabAnswer => ({ selected: [], conclusion: '', justification: '', hint: 0 });
 @Component({
-  imports: [
-    FormsModule,
-    PageHeaderComponent,
-    IconComponent,
-    SourceRefsComponent,
-    LearningVideoComponent,
-  ],
+  imports: [FormsModule, PageHeaderComponent, IconComponent, LearningVideoComponent],
   templateUrl: './lab.html',
 })
 export class LabPage {

@@ -1,4 +1,5 @@
-<section class="hero">
+<section class="hero layered-hero" style="--hero-photo: url('assets/images/servidores-nersc.jpg')">
+  <div class="hero-atmosphere" aria-hidden="true"></div>
   <div class="container hero-layout">
     <div class="hero-copy">
       <div class="eyebrow">
@@ -32,10 +33,11 @@
         height="850"
         fetchpriority="high"
       />
-      <figcaption>
-        Fotografía real · NERSC, 2011 · Derrick Coetzee / CC0. Imagen de contexto, no de Twinteach.
-      </figcaption>
-      <span class="photo-sticker">Aprender también es<br />hacer mejores preguntas.</span>
+      <figcaption>Fotografía real de contexto · No corresponde a Twinteach.</figcaption>
+      <span class="photo-sticker"
+        ><span class="sticker-code">01 → 18</span>De la primera pregunta<br />a una conclusión con
+        evidencia.</span
+      >
     </figure>
   </div>
 </section>
@@ -83,35 +85,38 @@
   <div class="module-grid">
     @for (m of modules; track m.path) {
       <a class="module-card" [class]="'module-card ' + m.class" [routerLink]="m.path"
-        ><div class="module-top">
-          <span class="module-icon"><app-icon [name]="m.icon" /></span
-          ><span class="mono module-number">{{ m.n }}</span>
+        ><div class="module-media">
+          <div class="module-top">
+            <span class="module-icon"><app-icon [name]="m.icon" /></span
+            ><span class="mono module-number">{{ m.n }}</span>
+          </div>
+          <div class="module-mini" aria-hidden="true">
+            @switch (m.class) {
+              @case ('version') {
+                <span class="mono mini-input">PHP 8.3.x</span><span class="mini-bar"></span
+                ><span class="mini-bar short"></span>
+              }
+              @case ('audit') {
+                <span class="mini-check">✓ <i></i></span><span class="mini-check">✓ <i></i></span
+                ><span class="mini-check pending">□ <i></i></span>
+              }
+              @case ('timeline') {
+                <div class="mini-timeline"><i></i><i></i><i></i><i></i></div>
+                <span class="mono">2024 <span class="float-right">2026</span></span>
+              }
+              @case ('lab') {
+                <span class="mini-log">10:31:14 <b>WEB</b> WARN</span
+                ><span class="mini-log">10:31:15 <b>PHP</b> WARN</span
+                ><span class="mini-log">10:31:18 <b>MON</b> ALERT</span>
+              }
+            }
+          </div>
         </div>
-        <div class="module-mini" aria-hidden="true">
-          @switch (m.class) {
-            @case ('version') {
-              <span class="mono mini-input">PHP 8.3.x</span><span class="mini-bar"></span
-              ><span class="mini-bar short"></span>
-            }
-            @case ('audit') {
-              <span class="mini-check">✓ <i></i></span><span class="mini-check">✓ <i></i></span
-              ><span class="mini-check pending">□ <i></i></span>
-            }
-            @case ('timeline') {
-              <div class="mini-timeline"><i></i><i></i><i></i><i></i></div>
-              <span class="mono">2024 <span class="float-right">2026</span></span>
-            }
-            @case ('lab') {
-              <span class="mini-log">10:31:14 <b>WEB</b> WARN</span
-              ><span class="mini-log">10:31:15 <b>PHP</b> WARN</span
-              ><span class="mini-log">10:31:18 <b>MON</b> ALERT</span>
-            }
-          }
-        </div>
-        <small class="card-tag">{{ m.tag }}</small>
-        <h3>{{ m.title }}</h3>
-        <p>{{ m.text }}</p>
-        <span class="card-cta">{{ m.cta }} <app-icon name="arrow" /></span
+        <div class="module-content">
+          <small class="card-tag">{{ m.tag }}</small>
+          <h3>{{ m.title }}</h3>
+          <p>{{ m.text }}</p>
+          <span class="card-cta">{{ m.cta }} <app-icon name="arrow" /></span></div
       ></a>
     }
   </div>
@@ -151,8 +156,8 @@
   <div class="section-heading">
     <div>
       <span class="eyebrow">ANTES DE LA VULNERABILIDAD</span>
-      <h2>¿Qué hace PHP en una web?</h2>
+      <h2>Del concepto a una aplicación real.</h2>
     </div>
   </div>
-  <app-learning-video id="php-intro" />
+  <app-learning-video id="php-es" />
 </section>
